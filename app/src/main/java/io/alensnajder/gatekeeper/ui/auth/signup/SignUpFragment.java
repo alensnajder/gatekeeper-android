@@ -5,19 +5,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
 import io.alensnajder.gatekeeper.R;
+import io.alensnajder.gatekeeper.vo.LiveHolder;
 
 public class SignUpFragment extends DaggerFragment implements View.OnClickListener {
+
+    private EditText etEmail;
+    private EditText etFirstName;
+    private EditText etLastName;
+    private EditText etPassword;
+    private EditText etConfirmPassword;
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
@@ -31,6 +43,11 @@ public class SignUpFragment extends DaggerFragment implements View.OnClickListen
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_sign_up, container, false);
+        etEmail = rootView.findViewById(R.id.etEmail);
+        etFirstName = rootView.findViewById(R.id.etFirstName);
+        etLastName = rootView.findViewById(R.id.etLastName);
+        etPassword = rootView.findViewById(R.id.etPassword);
+        etConfirmPassword = rootView.findViewById(R.id.etConfirmPassword);
         Button btSignUp = rootView.findViewById(R.id.btSignUp);
         btSignUp.setOnClickListener(this);
 
@@ -41,13 +58,31 @@ public class SignUpFragment extends DaggerFragment implements View.OnClickListen
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         signUpViewModel = ViewModelProviders.of(this, viewModelFactory).get(SignUpViewModel.class);
+
+        onRegistration();
+    }
+
+    private void onRegistration() {
+        signUpViewModel.getRegistration().observe(this, new Observer<LiveHolder>() {
+            @Override
+            public void onChanged(LiveHolder registrationHolder) {
+                switch (registrationHolder.status) {
+                    case SUCCESS:
+                        Navigation.findNavController(getView()).navigate(R.id.signUpSuccessFragment);
+                        break;
+                    case ERROR:
+                        Snackbar.make(getView(), registrationHolder.errorMessage, Snackbar.LENGTH_LONG).show();
+                        break;
+                }
+            }
+        });
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btSignUp:
-                Navigation.findNavController(getView()).navigate(R.id.signUpSuccessFragment);
+                signUpViewModel.signUp(etEmail.getText().toString(), etFirstName.getText().toString(), etLastName.getText().toString(), etPassword.getText().toString(), etConfirmPassword.getText().toString());
                 break;
         }
     }

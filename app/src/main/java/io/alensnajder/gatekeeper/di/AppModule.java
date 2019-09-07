@@ -10,7 +10,9 @@ import dagger.Provides;
 import io.alensnajder.gatekeeper.App;
 import io.alensnajder.gatekeeper.data.AppPreferences;
 import io.alensnajder.gatekeeper.data.repository.AuthRepository;
+import io.alensnajder.gatekeeper.data.repository.UserRepository;
 import io.alensnajder.gatekeeper.data.service.AuthService;
+import io.alensnajder.gatekeeper.data.service.UserService;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -55,6 +57,18 @@ class AppModule {
     @Singleton
     AuthRepository provideAuthRepository(AuthService authService) {
         return new AuthRepository(authService);
+    }
+
+    @Provides
+    @Singleton
+    UserService provideUserService(Retrofit retrofit) {
+        return retrofit.create(UserService.class);
+    }
+
+    @Provides
+    @Singleton
+    UserRepository provideUserRepository(UserService userService) {
+        return new UserRepository(userService);
     }
 
     @Provides
