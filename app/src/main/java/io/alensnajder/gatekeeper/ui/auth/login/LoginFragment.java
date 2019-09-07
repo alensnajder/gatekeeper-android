@@ -10,14 +10,18 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
 import io.alensnajder.gatekeeper.R;
+import io.alensnajder.gatekeeper.vo.LiveHolder;
 
 public class LoginFragment extends DaggerFragment implements View.OnClickListener {
 
@@ -50,6 +54,24 @@ public class LoginFragment extends DaggerFragment implements View.OnClickListene
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         loginViewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel.class);
+
+        onAuthentication();
+    }
+
+    private void onAuthentication() {
+        loginViewModel.getAuthentication().observe(this, new Observer<LiveHolder>() {
+            @Override
+            public void onChanged(LiveHolder authHolder) {
+                switch (authHolder.status) {
+                    case SUCCESS:
+                        Snackbar.make(getView(), "Success", Snackbar.LENGTH_LONG).show();
+                        break;
+                    case ERROR:
+                        Snackbar.make(getView(), authHolder.errorMessage, Snackbar.LENGTH_LONG).show();
+                        break;
+                }
+            }
+        });
     }
 
     @Override
