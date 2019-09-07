@@ -18,7 +18,7 @@ import javax.inject.Inject;
 import dagger.android.support.DaggerFragment;
 import io.alensnajder.gatekeeper.R;
 
-public class LoginFragment extends DaggerFragment {
+public class LoginFragment extends DaggerFragment implements View.OnClickListener {
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
@@ -40,4 +40,13 @@ public class LoginFragment extends DaggerFragment {
         loginViewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel.class);
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btLogin:
+                break;
+            case R.id.tvSignUp:
+                break;
+        }
+    }
 }
