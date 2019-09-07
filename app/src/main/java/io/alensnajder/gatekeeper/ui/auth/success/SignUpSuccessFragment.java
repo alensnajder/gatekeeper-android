@@ -1,4 +1,4 @@
-package io.alensnajder.gatekeeper.ui.auth.signup;
+package io.alensnajder.gatekeeper.ui.auth.success;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,22 +17,22 @@ import javax.inject.Inject;
 import dagger.android.support.DaggerFragment;
 import io.alensnajder.gatekeeper.R;
 
-public class SignUpFragment extends DaggerFragment implements View.OnClickListener {
+public class SignUpSuccessFragment extends DaggerFragment implements View.OnClickListener {
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
-    private SignUpViewModel signUpViewModel;
+    private SignUpSuccessViewModel signUpSuccessViewModel;
 
-    public static SignUpFragment newInstance() {
-        return new SignUpFragment();
+    public static SignUpSuccessFragment newInstance() {
+        return new SignUpSuccessFragment();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_sign_up, container, false);
-        Button btSignUp = rootView.findViewById(R.id.btSignUp);
-        btSignUp.setOnClickListener(this);
+        View rootView = inflater.inflate(R.layout.fragment_sign_up_success, container, false);
+        Button btToLogin = rootView.findViewById(R.id.btToLogin);
+        btToLogin.setOnClickListener(this);
 
         return rootView;
     }
@@ -40,14 +40,14 @@ public class SignUpFragment extends DaggerFragment implements View.OnClickListen
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        signUpViewModel = ViewModelProviders.of(this, viewModelFactory).get(SignUpViewModel.class);
+        signUpSuccessViewModel = ViewModelProviders.of(this, viewModelFactory).get(SignUpSuccessViewModel.class);
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.btSignUp:
-                Navigation.findNavController(getView()).navigate(R.id.signUpSuccessFragment);
+            case R.id.btToLogin:
+                Navigation.findNavController(getView()).navigate(R.id.loginFragment);
                 break;
         }
     }
