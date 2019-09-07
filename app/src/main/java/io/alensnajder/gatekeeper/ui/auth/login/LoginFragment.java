@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,6 +21,9 @@ import io.alensnajder.gatekeeper.R;
 
 public class LoginFragment extends DaggerFragment implements View.OnClickListener {
 
+    private EditText etEmail;
+    private EditText etPassword;
+
     @Inject
     ViewModelProvider.Factory viewModelFactory;
     private LoginViewModel loginViewModel;
@@ -32,10 +36,13 @@ public class LoginFragment extends DaggerFragment implements View.OnClickListene
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_login, container, false);
+        etEmail = rootView.findViewById(R.id.etEmail);
+        etPassword = rootView.findViewById(R.id.etPassword);
         Button btLogin = rootView.findViewById(R.id.btLogin);
         btLogin.setOnClickListener(this);
         TextView tvSignUp = rootView.findViewById(R.id.tvSignUp);
         tvSignUp.setOnClickListener(this);
+
         return rootView;
     }
 
@@ -49,6 +56,7 @@ public class LoginFragment extends DaggerFragment implements View.OnClickListene
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btLogin:
+                loginViewModel.login(etEmail.getText().toString(), etPassword.getText().toString());
                 break;
             case R.id.tvSignUp:
                 Navigation.findNavController(getView()).navigate(R.id.signUpFragment);
