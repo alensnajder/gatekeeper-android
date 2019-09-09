@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph_main">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_main"
+    app:startDestination="@id/gateFragment">
 
+    <fragment
+        android:id="@+id/gateFragment"
+        android:name="io.alensnajder.gatekeeper.ui.gate.GateFragment"
+        android:label="fragment_gate"
+        tools:layout="@layout/fragment_gate" />
 </navigation>

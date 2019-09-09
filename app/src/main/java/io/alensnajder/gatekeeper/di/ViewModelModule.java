@@ -9,6 +9,7 @@ import dagger.multibindings.IntoMap;
 import io.alensnajder.gatekeeper.ui.auth.login.LoginViewModel;
 import io.alensnajder.gatekeeper.ui.auth.signup.SignUpViewModel;
 import io.alensnajder.gatekeeper.ui.auth.success.SignUpSuccessViewModel;
+import io.alensnajder.gatekeeper.ui.gate.GateViewModel;
 
 @Module
 abstract class ViewModelModule {
@@ -27,6 +28,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(SignUpSuccessViewModel.class)
     abstract ViewModel bindSignUpSuccessViewModel(SignUpSuccessViewModel signUpSuccessViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(GateViewModel.class)
+    abstract ViewModel bindGateViewModel(GateViewModel gateViewModel);
 
     @Binds
     abstract ViewModelProvider.Factory bindViewModelFactory(ViewModelFactory factory);
