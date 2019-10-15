@@ -3,6 +3,7 @@ package io.alensnajder.gatekeeper.di;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -15,6 +16,8 @@ import io.alensnajder.gatekeeper.data.repository.UserRepository;
 import io.alensnajder.gatekeeper.data.service.AuthService;
 import io.alensnajder.gatekeeper.data.service.GateService;
 import io.alensnajder.gatekeeper.data.service.UserService;
+import io.alensnajder.gatekeeper.network.TokenAuthenticator;
+import io.alensnajder.gatekeeper.network.TokenInterceptor;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -31,16 +34,25 @@ class AppModule {
         return application;
     }
 
-    @Provides
+    @Provides @Named("HttpClient")
     @Singleton
-    OkHttpClient provideHttpClient() {
+    OkHttpClient provideHttpClient(TokenInterceptor tokenInterceptor, TokenAuthenticator tokenAuthenticator) {
+        return new OkHttpClient().newBuilder()
+                .addInterceptor(tokenInterceptor)
+                .authenticator(tokenAuthenticator)
+                .build();
+    }
+
+    @Provides @Named("HttpAuthClient")
+    @Singleton
+    OkHttpClient provideAuthHttpClient() {
         return new OkHttpClient().newBuilder()
                 .build();
     }
 
-    @Provides
+    @Provides @Named("Retrofit")
     @Singleton
-    Retrofit provideRetrofit(OkHttpClient okHttpClient) {
+    Retrofit provideRetrofit(@Named("HttpClient") OkHttpClient okHttpClient) {
         return new Retrofit.Builder()
                 .baseUrl("http://192.168.1.88:3000")
                 .client(okHttpClient)
@@ -49,9 +61,20 @@ class AppModule {
                 .build();
     }
 
+    @Provides @Named("AuthRetrofit")
+    @Singleton
+    Retrofit provideAuthRetrofit(@Named("HttpAuthClient") OkHttpClient httpClient) {
+        return new Retrofit.Builder()
+                .baseUrl("http://192.168.1.88:3000")
+                .client(httpClient)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build();
+    }
+
     @Provides
     @Singleton
-    AuthService provideAuthService(Retrofit retrofit) {
+    AuthService provideAuthService(@Named("AuthRetrofit") Retrofit retrofit) {
         return retrofit.create(AuthService.class);
     }
 
@@ -63,7 +86,7 @@ class AppModule {
 
     @Provides
     @Singleton
-    UserService provideUserService(Retrofit retrofit) {
+    UserService provideUserService(@Named("Retrofit") Retrofit retrofit) {
         return retrofit.create(UserService.class);
     }
 
@@ -75,7 +98,7 @@ class AppModule {
 
     @Provides
     @Singleton
-    GateService provideGateService(Retrofit retrofit) {
+    GateService provideGateService(@Named("Retrofit") Retrofit retrofit) {
         return retrofit.create(GateService.class);
     }
 
@@ -95,5 +118,17 @@ class AppModule {
     @Singleton
     AppPreferences provideAppPreferences(SharedPreferences sharedPreferences) {
         return new AppPreferences(sharedPreferences);
+    }
+
+    @Provides
+    @Singleton
+    TokenInterceptor provideTokenInterceptor(AppPreferences appPreferences) {
+        return new TokenInterceptor(appPreferences);
+    }
+
+    @Provides
+    @Singleton
+    TokenAuthenticator provideTokenAuthenticator(AuthService authService, AppPreferences appPreferences, TokenInterceptor tokenInterceptor) {
+        return new TokenAuthenticator(authService, appPreferences, tokenInterceptor);
     }
 }

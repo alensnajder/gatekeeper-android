@@ -5,9 +5,10 @@
     android:layout_height="match_parent"
     tools:context=".ui.gate.GateFragment">
 
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvGates"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Gate fragment" />
+        android:scrollbars="vertical" />
 
 </FrameLayout>
