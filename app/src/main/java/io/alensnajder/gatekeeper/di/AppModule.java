@@ -10,8 +10,10 @@ import dagger.Provides;
 import io.alensnajder.gatekeeper.App;
 import io.alensnajder.gatekeeper.data.AppPreferences;
 import io.alensnajder.gatekeeper.data.repository.AuthRepository;
+import io.alensnajder.gatekeeper.data.repository.GateRepository;
 import io.alensnajder.gatekeeper.data.repository.UserRepository;
 import io.alensnajder.gatekeeper.data.service.AuthService;
+import io.alensnajder.gatekeeper.data.service.GateService;
 import io.alensnajder.gatekeeper.data.service.UserService;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -69,6 +71,18 @@ class AppModule {
     @Singleton
     UserRepository provideUserRepository(UserService userService) {
         return new UserRepository(userService);
+    }
+
+    @Provides
+    @Singleton
+    GateService provideGateService(Retrofit retrofit) {
+        return retrofit.create(GateService.class);
+    }
+
+    @Provides
+    @Singleton
+    GateRepository provideGateRepository(GateService gateService) {
+        return new GateRepository(gateService);
     }
 
     @Provides
