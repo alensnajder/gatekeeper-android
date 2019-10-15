@@ -1,5 +1,6 @@
 package io.alensnajder.gatekeeper.ui.auth.login;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,8 @@ import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
 import io.alensnajder.gatekeeper.R;
+import io.alensnajder.gatekeeper.ui.auth.AuthActivity;
+import io.alensnajder.gatekeeper.ui.main.MainActivity;
 import io.alensnajder.gatekeeper.vo.LiveHolder;
 
 public class LoginFragment extends DaggerFragment implements View.OnClickListener {
@@ -64,7 +67,9 @@ public class LoginFragment extends DaggerFragment implements View.OnClickListene
             public void onChanged(LiveHolder authHolder) {
                 switch (authHolder.status) {
                     case SUCCESS:
-                        Snackbar.make(getView(), "Success", Snackbar.LENGTH_LONG).show();
+                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                        startActivity(intent);
+                        getActivity().finish();
                         break;
                     case ERROR:
                         Snackbar.make(getView(), authHolder.errorMessage, Snackbar.LENGTH_LONG).show();
