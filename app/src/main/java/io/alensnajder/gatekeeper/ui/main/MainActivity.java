@@ -3,7 +3,6 @@ package io.alensnajder.gatekeeper.ui.main;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.Menu;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -21,7 +20,8 @@ import io.alensnajder.gatekeeper.R;
 import io.alensnajder.gatekeeper.data.AppPreferences;
 import io.alensnajder.gatekeeper.ui.auth.AuthActivity;
 
-public class MainActivity extends DaggerAppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class MainActivity extends DaggerAppCompatActivity
+        implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private AppBarConfiguration mAppBarConfiguration;
 
@@ -40,7 +40,7 @@ public class MainActivity extends DaggerAppCompatActivity implements SharedPrefe
         NavigationView navigationView = findViewById(R.id.nav_view);
 
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_gate)
+                R.id.nav_gate, R.id.nav_record)
                 .setDrawerLayout(drawerLayout)
                 .build();
 
