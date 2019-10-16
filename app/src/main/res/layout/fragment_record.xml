@@ -5,9 +5,10 @@
     android:layout_height="match_parent"
     tools:context=".ui.record.RecordFragment">
 
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvRecords"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Records" />
+        android:scrollbars="vertical" />
 
 </FrameLayout>

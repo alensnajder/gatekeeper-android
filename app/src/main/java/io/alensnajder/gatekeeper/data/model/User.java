@@ -41,4 +41,8 @@ public class User {
     public int isActive() {
         return isActive;
     }
+
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
 }

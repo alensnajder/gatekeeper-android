@@ -1,24 +1,34 @@
 package io.alensnajder.gatekeeper.ui.record;
 
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.snackbar.Snackbar;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
 import io.alensnajder.gatekeeper.R;
+import io.alensnajder.gatekeeper.data.model.Record;
+import io.alensnajder.gatekeeper.vo.LiveHolder;
 
 public class RecordFragment extends DaggerFragment {
+
+    private RecyclerView rvRecords;
+    private RecordAdapter recordAdapter;
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
@@ -32,6 +42,13 @@ public class RecordFragment extends DaggerFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_record, container, false);
+        rvRecords = rootView.findViewById(R.id.rvRecords);
+
+        recordAdapter = new RecordAdapter();
+        rvRecords.setAdapter(recordAdapter);
+        rvRecords.setLayoutManager(new LinearLayoutManager(getContext()));
+        rvRecords.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
+
         return rootView;
     }
 
@@ -40,7 +57,25 @@ public class RecordFragment extends DaggerFragment {
         super.onActivityCreated(savedInstanceState);
         recordViewModel = ViewModelProviders.of(this, viewModelFactory).get(RecordViewModel.class);
 
+        recordViewModel.fetchRecords();
+        onRecords();
 
+    }
+
+    private void onRecords() {
+        recordViewModel.getRecordsLive().observe(this, new Observer<LiveHolder>() {
+            @Override
+            public void onChanged(LiveHolder recordsHolder) {
+                switch (recordsHolder.status) {
+                    case SUCCESS:
+                        recordAdapter.setRecords((List<Record>) recordsHolder.data);
+                        break;
+                    case ERROR:
+                        Snackbar.make(getView(), recordsHolder.errorMessage, Snackbar.LENGTH_LONG).show();
+                        break;
+                }
+            }
+        });
     }
 
 }
