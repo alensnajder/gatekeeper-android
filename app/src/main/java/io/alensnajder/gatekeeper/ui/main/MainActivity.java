@@ -21,7 +21,7 @@ import io.alensnajder.gatekeeper.R;
 import io.alensnajder.gatekeeper.data.AppPreferences;
 import io.alensnajder.gatekeeper.ui.auth.AuthActivity;
 
-public class MainActivity extends DaggerAppCompatActivity {
+public class MainActivity extends DaggerAppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private AppBarConfiguration mAppBarConfiguration;
 
@@ -67,5 +67,19 @@ public class MainActivity extends DaggerAppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equals("PREF_KEY_REFRESH_TOKEN")) {
+            String refreshToken = appPreferences.getRefreshToken();
+
+            if (refreshToken == null) {
+                Intent intent = new Intent(this, AuthActivity.class);
+                startActivity(intent);
+
+                finish();
+            }
+        }
     }
 }
