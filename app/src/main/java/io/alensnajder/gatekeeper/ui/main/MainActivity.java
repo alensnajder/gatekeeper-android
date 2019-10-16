@@ -40,7 +40,7 @@ public class MainActivity extends DaggerAppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
 
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_gate, R.id.nav_record)
+                R.id.nav_gate, R.id.nav_record, R.id.nav_user)
                 .setDrawerLayout(drawerLayout)
                 .build();
 

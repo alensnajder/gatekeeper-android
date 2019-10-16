@@ -102,13 +102,25 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="recordFragment">
+                  <entry key="nav_record">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
                             <option name="x" value="334" />
                             <option name="y" value="14" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="userFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="179" />
+                            <option name="y" value="354" />
                           </Point>
                         </option>
                       </LayoutPositions>

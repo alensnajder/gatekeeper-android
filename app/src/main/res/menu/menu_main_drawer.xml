@@ -12,6 +12,10 @@
             android:id="@+id/nav_record"
             android:icon="@drawable/ic_remote"
             android:title="Records" />
+        <item
+            android:id="@id/nav_user"
+            android:icon="@drawable/ic_remote"
+            android:title="Users" />
     </group>
 
 </menu>
