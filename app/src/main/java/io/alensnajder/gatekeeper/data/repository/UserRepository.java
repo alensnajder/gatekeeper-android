@@ -1,5 +1,7 @@
 package io.alensnajder.gatekeeper.data.repository;
 
+import java.util.List;
+
 import javax.inject.Singleton;
 
 import io.alensnajder.gatekeeper.data.model.User;
@@ -14,6 +16,10 @@ public class UserRepository {
 
     public UserRepository(UserService userService) {
         this.userService = userService;
+    }
+
+    public Single<List<User>> getUsers() {
+        return userService.getUsers();
     }
 
     public Single<User> createUser(String firstName, String lastName, String email, String password, String confirmPassword) {
