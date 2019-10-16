@@ -12,9 +12,11 @@ import io.alensnajder.gatekeeper.App;
 import io.alensnajder.gatekeeper.data.AppPreferences;
 import io.alensnajder.gatekeeper.data.repository.AuthRepository;
 import io.alensnajder.gatekeeper.data.repository.GateRepository;
+import io.alensnajder.gatekeeper.data.repository.RecordRepository;
 import io.alensnajder.gatekeeper.data.repository.UserRepository;
 import io.alensnajder.gatekeeper.data.service.AuthService;
 import io.alensnajder.gatekeeper.data.service.GateService;
+import io.alensnajder.gatekeeper.data.service.RecordService;
 import io.alensnajder.gatekeeper.data.service.UserService;
 import io.alensnajder.gatekeeper.network.TokenAuthenticator;
 import io.alensnajder.gatekeeper.network.TokenInterceptor;
@@ -106,6 +108,18 @@ class AppModule {
     @Singleton
     GateRepository provideGateRepository(GateService gateService) {
         return new GateRepository(gateService);
+    }
+
+    @Provides
+    @Singleton
+    RecordService provideRecordService(@Named("Retrofit") Retrofit retrofit) {
+        return retrofit.create(RecordService.class);
+    }
+
+    @Provides
+    @Singleton
+    RecordRepository provideRecordRepository(RecordService recordService) {
+        return new RecordRepository(recordService);
     }
 
     @Provides

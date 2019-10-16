@@ -10,11 +10,11 @@ public class User {
     @SerializedName("email")
     private String email;
     @SerializedName("is_admin")
-    private boolean isAdmin;
+    private int isAdmin;
     @SerializedName("is_active")
-    private boolean isActive;
+    private int isActive;
 
-    public User(String firstName, String lastName, String email, boolean isAdmin, boolean isActive) {
+    public User(String firstName, String lastName, String email, int isAdmin, int isActive) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -34,11 +34,11 @@ public class User {
         return email;
     }
 
-    public boolean isAdmin() {
+    public int isAdmin() {
         return isAdmin;
     }
 
-    public boolean isActive() {
+    public int isActive() {
         return isActive;
     }
 }

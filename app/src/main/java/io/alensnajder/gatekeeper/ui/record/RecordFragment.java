@@ -39,6 +39,8 @@ public class RecordFragment extends DaggerFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         recordViewModel = ViewModelProviders.of(this, viewModelFactory).get(RecordViewModel.class);
+
+
     }
 
 }
