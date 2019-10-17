@@ -1,24 +1,34 @@
 package io.alensnajder.gatekeeper.ui.user;
 
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.snackbar.Snackbar;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
 import io.alensnajder.gatekeeper.R;
+import io.alensnajder.gatekeeper.data.model.User;
+import io.alensnajder.gatekeeper.vo.LiveHolder;
 
 public class UserFragment extends DaggerFragment {
+
+    private RecyclerView rvUsers;
+    private UserAdapter userAdapter;
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
@@ -32,6 +42,12 @@ public class UserFragment extends DaggerFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_user, container, false);
+        rvUsers = rootView.findViewById(R.id.rvUsers);
+
+        userAdapter = new UserAdapter();
+        rvUsers.setAdapter(userAdapter);
+        rvUsers.setLayoutManager(new LinearLayoutManager(getContext()));
+        rvUsers.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
 
         return rootView;
     }
@@ -40,6 +56,25 @@ public class UserFragment extends DaggerFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         userViewModel = ViewModelProviders.of(this, viewModelFactory).get(UserViewModel.class);
+        userViewModel.fetchUsers();
+
+        onUsers();
+    }
+
+    private void onUsers() {
+        userViewModel.getUsersLive().observe(this, new Observer<LiveHolder>() {
+            @Override
+            public void onChanged(LiveHolder usersHolder) {
+                switch (usersHolder.status) {
+                    case SUCCESS:
+                        userAdapter.setUsers((List<User>) usersHolder.data);
+                        break;
+                    case ERROR:
+                        Snackbar.make(getView(), usersHolder.errorMessage, Snackbar.LENGTH_LONG).show();
+                        break;
+                }
+            }
+        });
     }
 
 }
