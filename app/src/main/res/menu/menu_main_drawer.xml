@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
+    <group android:id="@+id/group_primary"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_gate"
             android:icon="@drawable/ic_remote"
@@ -18,7 +19,8 @@
             android:title="Users" />
     </group>
 
-    <group android:checkableBehavior="none">
+    <group android:id="@+id/group_secondary"
+        android:checkableBehavior="none">
         <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/ic_account"
