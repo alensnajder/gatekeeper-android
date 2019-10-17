@@ -3,8 +3,11 @@ package io.alensnajder.gatekeeper.ui.main;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -21,9 +24,11 @@ import io.alensnajder.gatekeeper.data.AppPreferences;
 import io.alensnajder.gatekeeper.ui.auth.AuthActivity;
 
 public class MainActivity extends DaggerAppCompatActivity
-        implements SharedPreferences.OnSharedPreferenceChangeListener {
+        implements SharedPreferences.OnSharedPreferenceChangeListener, NavigationView.OnNavigationItemSelectedListener {
 
-    private AppBarConfiguration mAppBarConfiguration;
+    private DrawerLayout drawerLayout;
+    private NavController navController;
+    private AppBarConfiguration appBarConfiguration;
 
     @Inject
     AppPreferences appPreferences;
@@ -36,17 +41,19 @@ public class MainActivity extends DaggerAppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+        drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
 
-        mAppBarConfiguration = new AppBarConfiguration.Builder(
+        appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_gate, R.id.nav_record, R.id.nav_user)
                 .setDrawerLayout(drawerLayout)
                 .build();
 
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        navigationView.setNavigationItemSelectedListener(this);
 
         isRefreshToken();
     }
@@ -64,8 +71,7 @@ public class MainActivity extends DaggerAppCompatActivity
 
     @Override
     public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        return NavigationUI.navigateUp(navController, mAppBarConfiguration)
+        return NavigationUI.navigateUp(navController, appBarConfiguration)
                 || super.onSupportNavigateUp();
     }
 
@@ -80,6 +86,37 @@ public class MainActivity extends DaggerAppCompatActivity
 
                 finish();
             }
+        }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        menuItem.setChecked(true);
+        drawerLayout.closeDrawer(GravityCompat.START);
+
+        switch (menuItem.getItemId()) {
+            case R.id.nav_logout:
+                appPreferences.setAccessToken(null);
+                appPreferences.setRefreshToken(null);
+                Intent intent = new Intent(this, AuthActivity.class);
+                startActivity(intent);
+
+                finish();
+                break;
+            default:
+                navController.navigate(menuItem.getItemId());
+                break;
+        }
+
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
         }
     }
 }
