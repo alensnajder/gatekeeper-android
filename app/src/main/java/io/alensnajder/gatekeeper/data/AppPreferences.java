@@ -12,6 +12,7 @@ public class AppPreferences {
 
     private static final String PREF_KEY_ACCESS_TOKEN = "PREF_KEY_ACCESS_TOKEN";
     private static final String PREF_KEY_REFRESH_TOKEN = "PREF_KEY_REFRESH_TOKEN";
+    private static final String PREF_KEY_HOST = "PREF_KEY_HOST";
 
     @Inject
     public AppPreferences(SharedPreferences sharedPreferences) {
@@ -26,11 +27,19 @@ public class AppPreferences {
         return sharedPreferences.getString(PREF_KEY_REFRESH_TOKEN, null);
     }
 
+    public String getHost() {
+        return sharedPreferences.getString(PREF_KEY_HOST, null);
+    }
+
     public void setAccessToken(String accessToken) {
         sharedPreferences.edit().putString(PREF_KEY_ACCESS_TOKEN, accessToken).apply();
     }
 
     public void setRefreshToken(String refreshToken) {
         sharedPreferences.edit().putString(PREF_KEY_REFRESH_TOKEN, refreshToken).apply();
+    }
+
+    public void setHost(String host) {
+        sharedPreferences.edit().putString(PREF_KEY_HOST, host).apply();
     }
 }

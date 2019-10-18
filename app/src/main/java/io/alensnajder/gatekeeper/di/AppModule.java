@@ -18,6 +18,7 @@ import io.alensnajder.gatekeeper.data.service.AuthService;
 import io.alensnajder.gatekeeper.data.service.GateService;
 import io.alensnajder.gatekeeper.data.service.RecordService;
 import io.alensnajder.gatekeeper.data.service.UserService;
+import io.alensnajder.gatekeeper.network.HostInterceptor;
 import io.alensnajder.gatekeeper.network.TokenAuthenticator;
 import io.alensnajder.gatekeeper.network.TokenInterceptor;
 import okhttp3.OkHttpClient;
@@ -38,17 +39,19 @@ class AppModule {
 
     @Provides @Named("HttpClient")
     @Singleton
-    OkHttpClient provideHttpClient(TokenInterceptor tokenInterceptor, TokenAuthenticator tokenAuthenticator) {
+    OkHttpClient provideHttpClient(TokenInterceptor tokenInterceptor, TokenAuthenticator tokenAuthenticator, HostInterceptor hostInterceptor) {
         return new OkHttpClient().newBuilder()
                 .addInterceptor(tokenInterceptor)
                 .authenticator(tokenAuthenticator)
+                .addInterceptor(hostInterceptor)
                 .build();
     }
 
     @Provides @Named("HttpAuthClient")
     @Singleton
-    OkHttpClient provideAuthHttpClient() {
+    OkHttpClient provideAuthHttpClient(HostInterceptor hostInterceptor) {
         return new OkHttpClient().newBuilder()
+                .addInterceptor(hostInterceptor)
                 .build();
     }
 
@@ -56,7 +59,7 @@ class AppModule {
     @Singleton
     Retrofit provideRetrofit(@Named("HttpClient") OkHttpClient okHttpClient) {
         return new Retrofit.Builder()
-                .baseUrl("http://192.168.1.88:3000")
+                .baseUrl("http://192.168.1.1")
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -67,7 +70,7 @@ class AppModule {
     @Singleton
     Retrofit provideAuthRetrofit(@Named("HttpAuthClient") OkHttpClient httpClient) {
         return new Retrofit.Builder()
-                .baseUrl("http://192.168.1.88:3000")
+                .baseUrl("http://192.168.1.1")
                 .client(httpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -132,6 +135,12 @@ class AppModule {
     @Singleton
     AppPreferences provideAppPreferences(SharedPreferences sharedPreferences) {
         return new AppPreferences(sharedPreferences);
+    }
+
+    @Provides
+    @Singleton
+    HostInterceptor provideHostInterceptor() {
+        return new HostInterceptor();
     }
 
     @Provides

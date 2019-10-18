@@ -21,6 +21,7 @@ import javax.inject.Inject;
 import dagger.android.support.DaggerAppCompatActivity;
 import io.alensnajder.gatekeeper.R;
 import io.alensnajder.gatekeeper.data.AppPreferences;
+import io.alensnajder.gatekeeper.network.HostInterceptor;
 import io.alensnajder.gatekeeper.ui.auth.AuthActivity;
 
 public class MainActivity extends DaggerAppCompatActivity
@@ -32,6 +33,8 @@ public class MainActivity extends DaggerAppCompatActivity
 
     @Inject
     AppPreferences appPreferences;
+    @Inject
+    HostInterceptor hostInterceptor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +59,11 @@ public class MainActivity extends DaggerAppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         isRefreshToken();
+
+        String host = appPreferences.getHost();
+        if (host != null) {
+            hostInterceptor.setHost(host);
+        }
     }
 
     private void isRefreshToken() {

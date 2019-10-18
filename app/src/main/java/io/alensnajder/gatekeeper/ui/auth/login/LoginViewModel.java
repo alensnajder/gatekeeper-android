@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import io.alensnajder.gatekeeper.data.AppPreferences;
 import io.alensnajder.gatekeeper.data.model.Auth;
 import io.alensnajder.gatekeeper.data.repository.AuthRepository;
+import io.alensnajder.gatekeeper.network.HostInterceptor;
 import io.alensnajder.gatekeeper.vo.LiveHolder;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -18,14 +19,16 @@ public class LoginViewModel extends ViewModel {
 
     private AuthRepository authRepository;
     private AppPreferences appPreferences;
+    private HostInterceptor hostInterceptor;
 
     private CompositeDisposable disposable;
     private final MutableLiveData<LiveHolder> authentication = new MutableLiveData<>();
 
     @Inject
-    public LoginViewModel(AuthRepository authRepository, AppPreferences appPreferences) {
+    public LoginViewModel(AuthRepository authRepository, AppPreferences appPreferences, HostInterceptor hostInterceptor) {
         this.authRepository = authRepository;
         this.appPreferences = appPreferences;
+        this.hostInterceptor = hostInterceptor;
         disposable = new CompositeDisposable();
     }
 
@@ -51,6 +54,11 @@ public class LoginViewModel extends ViewModel {
                     }
                 }));
 
+    }
+
+    public void setHost(String host) {
+        appPreferences.setHost(host);
+        hostInterceptor.setHost(host);
     }
 
 }

@@ -1,10 +1,17 @@
 package io.alensnajder.gatekeeper.ui.auth.login;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -22,6 +29,8 @@ import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
 import io.alensnajder.gatekeeper.R;
+import io.alensnajder.gatekeeper.data.AppPreferences;
+import io.alensnajder.gatekeeper.network.HostInterceptor;
 import io.alensnajder.gatekeeper.ui.auth.AuthActivity;
 import io.alensnajder.gatekeeper.ui.main.MainActivity;
 import io.alensnajder.gatekeeper.vo.LiveHolder;
@@ -33,6 +42,10 @@ public class LoginFragment extends DaggerFragment implements View.OnClickListene
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
+    @Inject
+    AppPreferences appPreferences;
+    @Inject
+    HostInterceptor hostInterceptor;
     private LoginViewModel loginViewModel;
 
     public static LoginFragment newInstance() {
@@ -43,6 +56,7 @@ public class LoginFragment extends DaggerFragment implements View.OnClickListene
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_login, container, false);
+        setHasOptionsMenu(true);
         etEmail = rootView.findViewById(R.id.etEmail);
         etPassword = rootView.findViewById(R.id.etPassword);
         Button btLogin = rootView.findViewById(R.id.btLogin);
@@ -89,5 +103,55 @@ public class LoginFragment extends DaggerFragment implements View.OnClickListene
                 Navigation.findNavController(getView()).navigate(R.id.signUpFragment);
                 break;
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_login, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_host:
+                showHostDialog();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void showHostDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Host");
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_host, (ViewGroup) getView(), false);
+        final EditText etHost = view.findViewById(R.id.etHost);
+
+        String host = appPreferences.getHost();
+
+        if (host != null) {
+            etHost.setText(host);
+        }
+
+        builder.setView(view);
+
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String host = etHost.getText().toString();
+                loginViewModel.setHost(host);
+                dialog.cancel();
+            }
+        });
+
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
     }
 }
