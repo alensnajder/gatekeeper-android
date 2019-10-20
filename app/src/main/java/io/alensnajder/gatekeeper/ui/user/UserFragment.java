@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,7 +26,7 @@ import io.alensnajder.gatekeeper.R;
 import io.alensnajder.gatekeeper.data.model.User;
 import io.alensnajder.gatekeeper.vo.LiveHolder;
 
-public class UserFragment extends DaggerFragment {
+public class UserFragment extends DaggerFragment implements UserAdapter.OnItemClickListener {
 
     private RecyclerView rvUsers;
     private UserAdapter userAdapter;
@@ -44,7 +45,7 @@ public class UserFragment extends DaggerFragment {
         View rootView = inflater.inflate(R.layout.fragment_user, container, false);
         rvUsers = rootView.findViewById(R.id.rvUsers);
 
-        userAdapter = new UserAdapter();
+        userAdapter = new UserAdapter(this);
         rvUsers.setAdapter(userAdapter);
         rvUsers.setLayoutManager(new LinearLayoutManager(getContext()));
         rvUsers.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
@@ -77,4 +78,8 @@ public class UserFragment extends DaggerFragment {
         });
     }
 
+    @Override
+    public void onItemClick(User user) {
+        Navigation.findNavController(getView()).navigate(R.id.userDetailFragment);
+    }
 }

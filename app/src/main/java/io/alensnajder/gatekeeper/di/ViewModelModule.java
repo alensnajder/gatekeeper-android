@@ -12,6 +12,7 @@ import io.alensnajder.gatekeeper.ui.auth.success.SignUpSuccessViewModel;
 import io.alensnajder.gatekeeper.ui.gate.GateViewModel;
 import io.alensnajder.gatekeeper.ui.record.RecordViewModel;
 import io.alensnajder.gatekeeper.ui.user.UserViewModel;
+import io.alensnajder.gatekeeper.ui.user.detail.UserDetailViewModel;
 
 @Module
 abstract class ViewModelModule {
@@ -45,6 +46,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(UserViewModel.class)
     abstract ViewModel bindUserViewModel(UserViewModel userViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(UserDetailViewModel.class)
+    abstract ViewModel bindUserDetailViewModel(UserDetailViewModel userDetailViewModel);
 
     @Binds
     abstract ViewModelProvider.Factory bindViewModelFactory(ViewModelFactory factory);

@@ -5,6 +5,7 @@ import dagger.android.ContributesAndroidInjector;
 import io.alensnajder.gatekeeper.ui.gate.GateFragment;
 import io.alensnajder.gatekeeper.ui.record.RecordFragment;
 import io.alensnajder.gatekeeper.ui.user.UserFragment;
+import io.alensnajder.gatekeeper.ui.user.detail.UserDetailFragment;
 
 @Module
 public abstract class MainFragmentProvider {
@@ -16,4 +17,7 @@ public abstract class MainFragmentProvider {
 
     @ContributesAndroidInjector
     abstract UserFragment bindUserFragment();
+
+    @ContributesAndroidInjector
+    abstract UserDetailFragment bindUserDetailFragment();
 }

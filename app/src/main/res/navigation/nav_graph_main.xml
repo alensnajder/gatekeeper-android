@@ -26,5 +26,14 @@
         android:id="@+id/nav_user"
         android:name="io.alensnajder.gatekeeper.ui.user.UserFragment"
         android:label="Users"
-        tools:layout="@layout/fragment_user" />
+        tools:layout="@layout/fragment_user" >
+        <action
+            android:id="@+id/action_nav_user_to_userDetailFragment"
+            app:destination="@id/userDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userDetailFragment"
+        android:name="io.alensnajder.gatekeeper.ui.user.detail.UserDetailFragment"
+        android:label="User details"
+        tools:layout="@layout/fragment_user_detail" />
 </navigation>

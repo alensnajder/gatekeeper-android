@@ -14,12 +14,14 @@ import java.util.List;
 import io.alensnajder.gatekeeper.R;
 import io.alensnajder.gatekeeper.data.model.User;
 
-public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
+public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
     private List<User> users;
+    private final OnItemClickListener listener;
 
-    public UserAdapter() {
+    public UserAdapter(OnItemClickListener listener) {
         this.users = new ArrayList<>();
+        this.listener = listener;
     }
 
     public void setUsers(List<User> users) {
@@ -29,18 +31,15 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
     @NonNull
     @Override
-    public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_users, parent, false);
-        UserViewHolder viewHolder = new UserViewHolder(view);
 
-        return viewHolder;
+        return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
-        User user = users.get(position);
-        holder.tvUserName.setText(user.getFullName());
-        holder.tvEmail.setText(user.getEmail());
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        holder.bind(users.get(position), listener);
     }
 
     @Override
@@ -48,15 +47,30 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         return users.size();
     }
 
-    public static class UserViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvUserName;
         TextView tvEmail;
 
-        public UserViewHolder(View itemView) {
+        public ViewHolder(View itemView) {
             super(itemView);
             tvUserName = itemView.findViewById(R.id.tvUserName);
             tvEmail = itemView.findViewById(R.id.tvEmail);
         }
+
+        public void bind(final User user, final OnItemClickListener listener) {
+            tvUserName.setText(user.getFullName());
+            tvEmail.setText(user.getEmail());
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemClick(user);
+                }
+            });
+        }
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(User user);
     }
 }
