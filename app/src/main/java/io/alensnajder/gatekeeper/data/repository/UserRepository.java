@@ -31,4 +31,8 @@ public class UserRepository {
 
         return userService.createUser(request);
     }
+
+    public Single<Void> removeUser(int id) {
+        return userService.removeUser(id);
+    }
 }

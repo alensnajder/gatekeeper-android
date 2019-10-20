@@ -1,7 +1,13 @@
 package io.alensnajder.gatekeeper.ui.user.detail;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Layout;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -29,6 +35,8 @@ public class UserDetailFragment extends DaggerFragment implements View.OnClickLi
     private TextView tvStatus;
     private TextView tvRole;
 
+    private User user;
+
     @Inject
     ViewModelProvider.Factory viewModelFactory;
     private UserDetailViewModel userDetailViewModel;
@@ -41,6 +49,7 @@ public class UserDetailFragment extends DaggerFragment implements View.OnClickLi
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_user_detail, container, false);
+        setHasOptionsMenu(true);
         tvFullName = rootView.findViewById(R.id.tvFullName);
         tvEmail = rootView.findViewById(R.id.tvEmail);
         tvStatus = rootView.findViewById(R.id.tvStatus);
@@ -67,7 +76,7 @@ public class UserDetailFragment extends DaggerFragment implements View.OnClickLi
             public void onChanged(LiveHolder userHolder) {
                 switch (userHolder.status) {
                     case SUCCESS:
-                        User user = (User) userHolder.data;
+                        user = (User) userHolder.data;
                         tvFullName.setText(user.getFullName());
                         tvEmail.setText(user.getEmail());
                         //tvStatus.setText((user.isActive()) ? "Active" : "Inactive");
@@ -78,6 +87,42 @@ public class UserDetailFragment extends DaggerFragment implements View.OnClickLi
                 }
             }
         });
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_user_details, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_remove:
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
+                dialogBuilder.setTitle("Remove");
+                dialogBuilder.setMessage("Are you sure you want to remove this item?");
+
+                dialogBuilder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        userDetailViewModel.removeUser(user.getId());
+                        dialog.cancel();
+                    }
+                });
+
+                dialogBuilder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                dialogBuilder.show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override

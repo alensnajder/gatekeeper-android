@@ -46,4 +46,21 @@ public class UserDetailViewModel extends ViewModel {
                     }
                 }));
     }
+
+    public void removeUser(int id) {
+        disposable.add(userRepository.removeUser(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        int i = 1 + 1;
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        int i = 1 + 1;
+                    }
+                }));
+    }
 }
