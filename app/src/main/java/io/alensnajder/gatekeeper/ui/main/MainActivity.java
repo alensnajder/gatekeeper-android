@@ -1,5 +1,7 @@
 package io.alensnajder.gatekeeper.ui.main;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -104,12 +106,31 @@ public class MainActivity extends DaggerAppCompatActivity
 
         switch (menuItem.getItemId()) {
             case R.id.nav_logout:
-                appPreferences.setAccessToken(null);
-                appPreferences.setRefreshToken(null);
-                Intent intent = new Intent(this, AuthActivity.class);
-                startActivity(intent);
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+                dialogBuilder.setTitle("Logout");
+                dialogBuilder.setMessage("Are you sure you want to logout?");
 
-                finish();
+                dialogBuilder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        appPreferences.setAccessToken(null);
+                        appPreferences.setRefreshToken(null);
+                        Intent intent = new Intent(getApplicationContext(), AuthActivity.class);
+                        startActivity(intent);
+
+                        finish();
+                        dialog.cancel();
+                    }
+                });
+
+                dialogBuilder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                dialogBuilder.show();
                 break;
             default:
                 navController.navigate(menuItem.getItemId());
