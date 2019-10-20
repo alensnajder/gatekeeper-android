@@ -3,6 +3,8 @@ package io.alensnajder.gatekeeper.data.model;
 import com.google.gson.annotations.SerializedName;
 
 public class User {
+    @SerializedName("id")
+    private int id;
     @SerializedName("first_name")
     private String firstName;
     @SerializedName("last_name")
@@ -14,12 +16,17 @@ public class User {
     @SerializedName("is_active")
     private int isActive;
 
-    public User(String firstName, String lastName, String email, int isAdmin, int isActive) {
+    public User(int id, String firstName, String lastName, String email, int isAdmin, int isActive) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.isAdmin = isAdmin;
         this.isActive = isActive;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getFirstName() {

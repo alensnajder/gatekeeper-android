@@ -22,6 +22,10 @@ public class UserRepository {
         return userService.getUsers();
     }
 
+    public Single<User> getUser(int id) {
+        return userService.getUser(id);
+    }
+
     public Single<User> createUser(String firstName, String lastName, String email, String password, String confirmPassword) {
         CreateUserRequest request = new CreateUserRequest(firstName, lastName, email, password, confirmPassword);
 

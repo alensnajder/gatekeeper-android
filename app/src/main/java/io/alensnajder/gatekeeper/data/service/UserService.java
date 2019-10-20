@@ -8,10 +8,14 @@ import io.reactivex.Single;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 public interface UserService {
     @GET("/v1/users")
     Single<List<User>> getUsers();
+
+    @GET("/v1/users/{id}")
+    Single<User> getUser(@Path("id") int id);
 
     @POST("/v1/users")
     Single<User> createUser(@Body CreateUserRequest request);

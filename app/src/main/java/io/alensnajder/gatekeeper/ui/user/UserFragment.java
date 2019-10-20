@@ -80,6 +80,8 @@ public class UserFragment extends DaggerFragment implements UserAdapter.OnItemCl
 
     @Override
     public void onItemClick(User user) {
-        Navigation.findNavController(getView()).navigate(R.id.userDetailFragment);
+        UserFragmentDirections.ActionNavUserToUserDetailFragment action = UserFragmentDirections.actionNavUserToUserDetailFragment();
+        action.setUserId(user.getId());
+        Navigation.findNavController(getView()).navigate(action);
     }
 }
