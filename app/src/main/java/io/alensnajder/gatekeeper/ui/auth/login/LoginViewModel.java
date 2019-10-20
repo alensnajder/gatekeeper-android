@@ -9,6 +9,8 @@ import io.alensnajder.gatekeeper.data.AppPreferences;
 import io.alensnajder.gatekeeper.data.model.Auth;
 import io.alensnajder.gatekeeper.data.repository.AuthRepository;
 import io.alensnajder.gatekeeper.network.HostInterceptor;
+import io.alensnajder.gatekeeper.utils.AccountUtils;
+import io.alensnajder.gatekeeper.utils.HostUtils;
 import io.alensnajder.gatekeeper.vo.LiveHolder;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -18,17 +20,17 @@ import io.reactivex.schedulers.Schedulers;
 public class LoginViewModel extends ViewModel {
 
     private AuthRepository authRepository;
-    private AppPreferences appPreferences;
-    private HostInterceptor hostInterceptor;
+    private AccountUtils accountUtils;
+    private HostUtils hostUtils;
 
     private CompositeDisposable disposable;
     private final MutableLiveData<LiveHolder> authentication = new MutableLiveData<>();
 
     @Inject
-    public LoginViewModel(AuthRepository authRepository, AppPreferences appPreferences, HostInterceptor hostInterceptor) {
+    public LoginViewModel(AuthRepository authRepository, AccountUtils accountUtils, HostUtils hostUtils) {
         this.authRepository = authRepository;
-        this.appPreferences = appPreferences;
-        this.hostInterceptor = hostInterceptor;
+        this.accountUtils = accountUtils;
+        this.hostUtils = hostUtils;
         disposable = new CompositeDisposable();
     }
 
@@ -43,8 +45,7 @@ public class LoginViewModel extends ViewModel {
                 .subscribeWith(new DisposableSingleObserver<Auth>() {
                     @Override
                     public void onSuccess(Auth auth) {
-                        appPreferences.setAccessToken(auth.getAccessToken());
-                        appPreferences.setRefreshToken(auth.getRefreshToken());
+                        accountUtils.handleLogin(auth.getAccessToken(), auth.getRefreshToken());
                         authentication.setValue(LiveHolder.success(null));
                     }
 
@@ -57,8 +58,7 @@ public class LoginViewModel extends ViewModel {
     }
 
     public void setHost(String host) {
-        appPreferences.setHost(host);
-        hostInterceptor.setHost(host);
+        hostUtils.setHost(host);
     }
 
 }

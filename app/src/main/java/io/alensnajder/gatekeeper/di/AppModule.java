@@ -21,6 +21,8 @@ import io.alensnajder.gatekeeper.data.service.UserService;
 import io.alensnajder.gatekeeper.network.HostInterceptor;
 import io.alensnajder.gatekeeper.network.TokenAuthenticator;
 import io.alensnajder.gatekeeper.network.TokenInterceptor;
+import io.alensnajder.gatekeeper.utils.AccountUtils;
+import io.alensnajder.gatekeeper.utils.HostUtils;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -147,6 +149,18 @@ class AppModule {
     @Singleton
     TokenInterceptor provideTokenInterceptor(AppPreferences appPreferences) {
         return new TokenInterceptor(appPreferences);
+    }
+
+    @Provides
+    @Singleton
+    AccountUtils provideAccountUtils(AppPreferences appPreferences, TokenInterceptor tokenInterceptor) {
+        return new AccountUtils(appPreferences, tokenInterceptor);
+    }
+
+    @Provides
+    @Singleton
+    HostUtils provideHostUtils(AppPreferences appPreferences, HostInterceptor hostInterceptor) {
+        return new HostUtils(appPreferences, hostInterceptor);
     }
 
     @Provides

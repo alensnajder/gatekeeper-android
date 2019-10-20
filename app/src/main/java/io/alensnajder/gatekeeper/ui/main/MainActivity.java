@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -23,7 +25,6 @@ import javax.inject.Inject;
 import dagger.android.support.DaggerAppCompatActivity;
 import io.alensnajder.gatekeeper.R;
 import io.alensnajder.gatekeeper.data.AppPreferences;
-import io.alensnajder.gatekeeper.network.HostInterceptor;
 import io.alensnajder.gatekeeper.ui.auth.AuthActivity;
 
 public class MainActivity extends DaggerAppCompatActivity
@@ -34,15 +35,27 @@ public class MainActivity extends DaggerAppCompatActivity
     private AppBarConfiguration appBarConfiguration;
 
     @Inject
-    AppPreferences appPreferences;
+    ViewModelProvider.Factory viewModelFactory;
+    private MainViewModel mainViewModel;
+
     @Inject
-    HostInterceptor hostInterceptor;
+    AppPreferences appPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mainViewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel.class);
+
+        if (!mainViewModel.isReadyToRun()) {
+            navigateToLogin();
+        }
+
+        setupUi();
+    }
+
+    private void setupUi() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -59,24 +72,37 @@ public class MainActivity extends DaggerAppCompatActivity
         NavigationUI.setupWithNavController(navigationView, navController);
 
         navigationView.setNavigationItemSelectedListener(this);
-
-        isRefreshToken();
-
-        String host = appPreferences.getHost();
-        if (host != null) {
-            hostInterceptor.setHost(host);
-        }
     }
 
-    private void isRefreshToken() {
-        String refreshToken = appPreferences.getRefreshToken();
+    private void navigateToLogin() {
+        Intent intent = new Intent(this, AuthActivity.class);
+        startActivity(intent);
 
-        if (refreshToken == null) {
-            Intent intent = new Intent(this, AuthActivity.class);
-            startActivity(intent);
+        finish();
+    }
 
-            finish();
-        }
+    private void showLogoutDialog() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        dialogBuilder.setTitle("Logout");
+        dialogBuilder.setMessage("Are you sure you want to logout?");
+
+        dialogBuilder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mainViewModel.logout();
+                navigateToLogin();
+                dialog.cancel();
+            }
+        });
+
+        dialogBuilder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        dialogBuilder.show();
     }
 
     @Override
@@ -106,31 +132,7 @@ public class MainActivity extends DaggerAppCompatActivity
 
         switch (menuItem.getItemId()) {
             case R.id.nav_logout:
-                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-                dialogBuilder.setTitle("Logout");
-                dialogBuilder.setMessage("Are you sure you want to logout?");
-
-                dialogBuilder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        appPreferences.setAccessToken(null);
-                        appPreferences.setRefreshToken(null);
-                        Intent intent = new Intent(getApplicationContext(), AuthActivity.class);
-                        startActivity(intent);
-
-                        finish();
-                        dialog.cancel();
-                    }
-                });
-
-                dialogBuilder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-
-                dialogBuilder.show();
+                showLogoutDialog();
                 break;
             default:
                 navController.navigate(menuItem.getItemId());
