@@ -3,7 +3,6 @@ package io.alensnajder.gatekeeper.ui.main;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -24,11 +23,10 @@ import javax.inject.Inject;
 
 import dagger.android.support.DaggerAppCompatActivity;
 import io.alensnajder.gatekeeper.R;
-import io.alensnajder.gatekeeper.data.AppPreferences;
 import io.alensnajder.gatekeeper.ui.auth.AuthActivity;
 
 public class MainActivity extends DaggerAppCompatActivity
-        implements SharedPreferences.OnSharedPreferenceChangeListener, NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawerLayout;
     private NavController navController;
@@ -37,9 +35,6 @@ public class MainActivity extends DaggerAppCompatActivity
     @Inject
     ViewModelProvider.Factory viewModelFactory;
     private MainViewModel mainViewModel;
-
-    @Inject
-    AppPreferences appPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,20 +104,6 @@ public class MainActivity extends DaggerAppCompatActivity
     public boolean onSupportNavigateUp() {
         return NavigationUI.navigateUp(navController, appBarConfiguration)
                 || super.onSupportNavigateUp();
-    }
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (key.equals("PREF_KEY_REFRESH_TOKEN")) {
-            String refreshToken = appPreferences.getRefreshToken();
-
-            if (refreshToken == null) {
-                Intent intent = new Intent(this, AuthActivity.class);
-                startActivity(intent);
-
-                finish();
-            }
-        }
     }
 
     @Override
