@@ -26,6 +26,7 @@ import javax.inject.Inject;
 import dagger.android.support.DaggerFragment;
 import io.alensnajder.gatekeeper.R;
 import io.alensnajder.gatekeeper.data.model.User;
+import io.alensnajder.gatekeeper.ui.main.MainActivity;
 import io.alensnajder.gatekeeper.vo.LiveHolder;
 
 public class UserDetailFragment extends DaggerFragment implements View.OnClickListener {
@@ -77,6 +78,7 @@ public class UserDetailFragment extends DaggerFragment implements View.OnClickLi
                 switch (userHolder.status) {
                     case SUCCESS:
                         user = (User) userHolder.data;
+                        ((MainActivity) getActivity()).getSupportActionBar().setTitle(user.getFullName());
                         tvFullName.setText(user.getFullName());
                         tvEmail.setText(user.getEmail());
                         //tvStatus.setText((user.isActive()) ? "Active" : "Inactive");
