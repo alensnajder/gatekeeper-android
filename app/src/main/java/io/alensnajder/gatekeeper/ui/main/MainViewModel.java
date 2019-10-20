@@ -1,12 +1,9 @@
 package io.alensnajder.gatekeeper.ui.main;
 
-import android.accounts.Account;
-
 import androidx.lifecycle.ViewModel;
 
 import javax.inject.Inject;
 
-import io.alensnajder.gatekeeper.network.HostInterceptor;
 import io.alensnajder.gatekeeper.utils.AccountUtils;
 import io.alensnajder.gatekeeper.utils.HostUtils;
 
