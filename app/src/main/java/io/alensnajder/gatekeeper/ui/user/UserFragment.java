@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,6 +31,7 @@ public class UserFragment extends DaggerFragment implements UserAdapter.OnItemCl
 
     private RecyclerView rvUsers;
     private UserAdapter userAdapter;
+    private ProgressBar progressBar;
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
@@ -44,6 +46,7 @@ public class UserFragment extends DaggerFragment implements UserAdapter.OnItemCl
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_user, container, false);
         rvUsers = rootView.findViewById(R.id.rvUsers);
+        progressBar = rootView.findViewById(R.id.progress_bar);
 
         userAdapter = new UserAdapter(this);
         rvUsers.setAdapter(userAdapter);
@@ -57,15 +60,23 @@ public class UserFragment extends DaggerFragment implements UserAdapter.OnItemCl
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         userViewModel = ViewModelProviders.of(this, viewModelFactory).get(UserViewModel.class);
-        userViewModel.fetchUsers();
 
+        fetchUsers();
         onUsers();
+    }
+
+    private void fetchUsers() {
+        rvUsers.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+        userViewModel.fetchUsers();
     }
 
     private void onUsers() {
         userViewModel.getUsersLive().observe(this, new Observer<LiveHolder>() {
             @Override
             public void onChanged(LiveHolder usersHolder) {
+                progressBar.setVisibility(View.GONE);
+                rvUsers.setVisibility(View.VISIBLE);
                 switch (usersHolder.status) {
                     case SUCCESS:
                         userAdapter.setUsers((List<User>) usersHolder.data);
