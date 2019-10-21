@@ -3,6 +3,9 @@ package io.alensnajder.gatekeeper.di;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import javax.inject.Named;
 import javax.inject.Singleton;
 
@@ -22,6 +25,7 @@ import io.alensnajder.gatekeeper.network.HostInterceptor;
 import io.alensnajder.gatekeeper.network.TokenAuthenticator;
 import io.alensnajder.gatekeeper.network.TokenInterceptor;
 import io.alensnajder.gatekeeper.utils.AccountUtils;
+import io.alensnajder.gatekeeper.utils.BooleanTypeAdapter;
 import io.alensnajder.gatekeeper.utils.HostUtils;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -59,22 +63,22 @@ class AppModule {
 
     @Provides @Named("Retrofit")
     @Singleton
-    Retrofit provideRetrofit(@Named("HttpClient") OkHttpClient okHttpClient) {
+    Retrofit provideRetrofit(@Named("HttpClient") OkHttpClient okHttpClient, Gson gson) {
         return new Retrofit.Builder()
                 .baseUrl("http://192.168.1.1")
                 .client(okHttpClient)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
     }
 
     @Provides @Named("AuthRetrofit")
     @Singleton
-    Retrofit provideAuthRetrofit(@Named("HttpAuthClient") OkHttpClient httpClient) {
+    Retrofit provideAuthRetrofit(@Named("HttpAuthClient") OkHttpClient httpClient, Gson gson) {
         return new Retrofit.Builder()
                 .baseUrl("http://192.168.1.1")
                 .client(httpClient)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
     }
@@ -167,5 +171,19 @@ class AppModule {
     @Singleton
     TokenAuthenticator provideTokenAuthenticator(AuthService authService, AppPreferences appPreferences, TokenInterceptor tokenInterceptor) {
         return new TokenAuthenticator(authService, appPreferences, tokenInterceptor);
+    }
+
+    @Provides
+    @Singleton
+    Gson provideGson(BooleanTypeAdapter booleanTypeAdapter) {
+        return new GsonBuilder()
+                .registerTypeAdapter(boolean.class, booleanTypeAdapter)
+                .create();
+    }
+
+    @Provides
+    @Singleton
+    BooleanTypeAdapter provideBooleanTypeAdapter() {
+        return new BooleanTypeAdapter();
     }
 }
