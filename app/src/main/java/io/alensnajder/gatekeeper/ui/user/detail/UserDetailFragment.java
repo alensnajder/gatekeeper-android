@@ -3,7 +3,6 @@ package io.alensnajder.gatekeeper.ui.user.detail;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,7 +27,6 @@ import javax.inject.Inject;
 import dagger.android.support.DaggerFragment;
 import io.alensnajder.gatekeeper.R;
 import io.alensnajder.gatekeeper.data.model.User;
-import io.alensnajder.gatekeeper.ui.main.MainActivity;
 import io.alensnajder.gatekeeper.vo.LiveHolder;
 
 public class UserDetailFragment extends DaggerFragment implements View.OnClickListener {
