@@ -37,6 +37,7 @@ public class UserDetailFragment extends DaggerFragment implements View.OnClickLi
     private TextView tvEmail;
     private TextView tvStatus;
     private TextView tvRole;
+    private Button btStatusToggle;
     private ProgressBar progressBar;
     private ConstraintLayout content;
 
@@ -61,7 +62,7 @@ public class UserDetailFragment extends DaggerFragment implements View.OnClickLi
         tvEmail = rootView.findViewById(R.id.tvEmail);
         tvStatus = rootView.findViewById(R.id.tvStatus);
         tvRole = rootView.findViewById(R.id.tvRole);
-        Button btStatusToggle = rootView.findViewById(R.id.btStatusToggle);
+        btStatusToggle = rootView.findViewById(R.id.btStatusToggle);
         btStatusToggle.setOnClickListener(this);
 
         return rootView;
@@ -96,6 +97,7 @@ public class UserDetailFragment extends DaggerFragment implements View.OnClickLi
                         tvEmail.setText(user.getEmail());
                         tvStatus.setText((user.isActive()) ? "Active" : "Inactive");
                         tvRole.setText((user.isAdmin()) ? "Admin" : "User");
+                        btStatusToggle.setText((user.isActive()) ? "Deactivate" : "Activate");
                         break;
                     case ERROR:
                         Snackbar.make(getView(), userHolder.errorMessage, Snackbar.LENGTH_LONG).show();
