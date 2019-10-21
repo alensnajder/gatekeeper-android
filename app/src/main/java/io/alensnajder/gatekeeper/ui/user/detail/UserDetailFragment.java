@@ -78,7 +78,6 @@ public class UserDetailFragment extends DaggerFragment implements View.OnClickLi
                 switch (userHolder.status) {
                     case SUCCESS:
                         user = (User) userHolder.data;
-                        ((MainActivity) getActivity()).getSupportActionBar().setTitle(user.getFullName());
                         tvFullName.setText(user.getFullName());
                         tvEmail.setText(user.getEmail());
                         //tvStatus.setText((user.isActive()) ? "Active" : "Inactive");

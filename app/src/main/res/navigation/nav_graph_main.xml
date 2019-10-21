@@ -34,7 +34,7 @@
     <fragment
         android:id="@+id/userDetailFragment"
         android:name="io.alensnajder.gatekeeper.ui.user.detail.UserDetailFragment"
-        android:label="User details"
+        android:label="Details"
         tools:layout="@layout/fragment_user_detail" >
         <argument
             android:name="userId"
