@@ -1,5 +1,7 @@
 package io.alensnajder.gatekeeper.utils;
 
+import com.auth0.android.jwt.JWT;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -37,5 +39,18 @@ public class AccountUtils {
         }
 
         return false;
+    }
+
+    public int getAccountId() {
+        String accessToken = appPreferences.getAccessToken();
+
+        if (accessToken != null) {
+            JWT jwt = new JWT(accessToken);
+            int id = jwt.getClaim("id").asInt();
+
+            return id;
+        }
+
+        return 0;
     }
 }

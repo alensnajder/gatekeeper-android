@@ -5,11 +5,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
@@ -18,12 +21,15 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 
 import javax.inject.Inject;
 
 import dagger.android.support.DaggerAppCompatActivity;
 import io.alensnajder.gatekeeper.R;
+import io.alensnajder.gatekeeper.data.model.User;
 import io.alensnajder.gatekeeper.ui.auth.AuthActivity;
+import io.alensnajder.gatekeeper.vo.LiveHolder;
 
 public class MainActivity extends DaggerAppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -31,6 +37,9 @@ public class MainActivity extends DaggerAppCompatActivity
     private DrawerLayout drawerLayout;
     private NavController navController;
     private AppBarConfiguration appBarConfiguration;
+
+    private TextView tvFullName;
+    private TextView tvEmail;
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
@@ -48,6 +57,25 @@ public class MainActivity extends DaggerAppCompatActivity
         }
 
         setupUi();
+
+        mainViewModel.fetchLoggedInUser();
+        onUser();
+    }
+
+    private void onUser() {
+        mainViewModel.getUserLive().observe(this, new Observer<LiveHolder>() {
+            @Override
+            public void onChanged(LiveHolder userHolder) {
+                switch (userHolder.status) {
+                    case SUCCESS:
+                        setupNavigationHeader((User) userHolder.data);
+                        break;
+                    case ERROR:
+                        Snackbar.make(findViewById(android.R.id.content), userHolder.errorMessage, Snackbar.LENGTH_LONG).show();
+                        break;
+                }
+            }
+        });
     }
 
     private void setupUi() {
@@ -67,6 +95,15 @@ public class MainActivity extends DaggerAppCompatActivity
         NavigationUI.setupWithNavController(navigationView, navController);
 
         navigationView.setNavigationItemSelectedListener(this);
+
+        View navigationViewHeader = navigationView.getHeaderView(0);
+        tvFullName = navigationViewHeader.findViewById(R.id.tvFullName);
+        tvEmail = navigationViewHeader.findViewById(R.id.tvEmail);
+    }
+
+    private void setupNavigationHeader(User user) {
+        tvFullName.setText(user.getFullName());
+        tvEmail.setText(user.getEmail());
     }
 
     private void navigateToLogin() {
