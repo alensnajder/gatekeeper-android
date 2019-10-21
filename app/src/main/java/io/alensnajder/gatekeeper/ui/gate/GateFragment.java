@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,6 +30,7 @@ public class GateFragment extends DaggerFragment implements GateAdapter.OnLongIt
 
     private RecyclerView rvGates;
     private GateAdapter gateAdapter;
+    private ProgressBar progressBar;
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
@@ -43,6 +45,7 @@ public class GateFragment extends DaggerFragment implements GateAdapter.OnLongIt
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_gate, container, false);
         rvGates = rootView.findViewById(R.id.rvGates);
+        progressBar = rootView.findViewById(R.id.progress_bar);
 
         gateAdapter = new GateAdapter(this);
         rvGates.setAdapter(gateAdapter);
@@ -56,15 +59,23 @@ public class GateFragment extends DaggerFragment implements GateAdapter.OnLongIt
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         gateViewModel = ViewModelProviders.of(this, viewModelFactory).get(GateViewModel.class);
-        gateViewModel.fetchGates();
 
+        fetchGates();
         onGates();
+    }
+
+    private void fetchGates() {
+        rvGates.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+        gateViewModel.fetchGates();
     }
 
     private void onGates() {
         gateViewModel.getGatesLive().observe(this, new Observer<LiveHolder>() {
             @Override
             public void onChanged(LiveHolder gatesHolder) {
+                progressBar.setVisibility(View.GONE);
+                rvGates.setVisibility(View.VISIBLE);
                 switch (gatesHolder.status) {
                     case SUCCESS:
                         gateAdapter.setGates((List<Gate>) gatesHolder.data);
