@@ -14,12 +14,14 @@ import java.util.List;
 import io.alensnajder.gatekeeper.R;
 import io.alensnajder.gatekeeper.data.model.Gate;
 
-public class GateAdapter extends RecyclerView.Adapter<GateAdapter.GateViewHolder> {
+public class GateAdapter extends RecyclerView.Adapter<GateAdapter.ViewHolder> {
 
     private List<Gate> gates;
+    private final OnLongItemClickListener listener;
 
-    public GateAdapter() {
+    public GateAdapter(OnLongItemClickListener listener) {
         this.gates = new ArrayList<>();
+        this.listener = listener;
     }
 
     public void setGates(List<Gate> gates) {
@@ -29,17 +31,15 @@ public class GateAdapter extends RecyclerView.Adapter<GateAdapter.GateViewHolder
 
     @NonNull
     @Override
-    public GateViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_gates, parent, false);
-        GateViewHolder viewHolder = new GateViewHolder(view);
 
-        return viewHolder;
+        return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull GateViewHolder holder, int position) {
-        Gate gate = gates.get(position);
-        holder.tvGateName.setText(gate.getName());
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        holder.bind(gates.get(position), listener);
     }
 
     @Override
@@ -47,13 +47,28 @@ public class GateAdapter extends RecyclerView.Adapter<GateAdapter.GateViewHolder
         return gates.size();
     }
 
-    public static class GateViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvGateName;
 
-        public GateViewHolder(View itemView) {
+        public ViewHolder(View itemView) {
             super(itemView);
             tvGateName = itemView.findViewById(R.id.tvGateName);
         }
+
+        public void bind(final Gate gate, final OnLongItemClickListener listener) {
+            tvGateName.setText(gate.getName());
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    listener.onLongItemClick(gate);
+                    return true;
+                }
+            });
+        }
+    }
+
+    public interface OnLongItemClickListener {
+        void onLongItemClick(Gate gate);
     }
 }

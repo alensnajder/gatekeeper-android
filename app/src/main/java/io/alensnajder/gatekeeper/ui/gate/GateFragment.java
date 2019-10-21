@@ -25,7 +25,7 @@ import io.alensnajder.gatekeeper.R;
 import io.alensnajder.gatekeeper.data.model.Gate;
 import io.alensnajder.gatekeeper.vo.LiveHolder;
 
-public class GateFragment extends DaggerFragment {
+public class GateFragment extends DaggerFragment implements GateAdapter.OnLongItemClickListener {
 
     private RecyclerView rvGates;
     private GateAdapter gateAdapter;
@@ -44,7 +44,7 @@ public class GateFragment extends DaggerFragment {
         View rootView = inflater.inflate(R.layout.fragment_gate, container, false);
         rvGates = rootView.findViewById(R.id.rvGates);
 
-        gateAdapter = new GateAdapter();
+        gateAdapter = new GateAdapter(this);
         rvGates.setAdapter(gateAdapter);
         rvGates.setLayoutManager(new LinearLayoutManager(getContext()));
         rvGates.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
@@ -77,4 +77,8 @@ public class GateFragment extends DaggerFragment {
         });
     }
 
+    @Override
+    public void onLongItemClick(Gate gate) {
+
+    }
 }
