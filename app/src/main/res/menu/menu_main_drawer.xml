@@ -12,7 +12,7 @@
         <item
             android:id="@+id/nav_record"
             android:icon="@drawable/ic_history"
-            android:title="Records" />
+            android:title="History" />
         <item
             android:id="@id/nav_user"
             android:icon="@drawable/ic_remote"
