@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,6 +30,7 @@ public class RecordFragment extends DaggerFragment {
 
     private RecyclerView rvRecords;
     private RecordAdapter recordAdapter;
+    private ProgressBar progressBar;
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
@@ -43,6 +45,7 @@ public class RecordFragment extends DaggerFragment {
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_record, container, false);
         rvRecords = rootView.findViewById(R.id.rvRecords);
+        progressBar = rootView.findViewById(R.id.progress_bar);
 
         recordAdapter = new RecordAdapter();
         rvRecords.setAdapter(recordAdapter);
@@ -57,15 +60,23 @@ public class RecordFragment extends DaggerFragment {
         super.onActivityCreated(savedInstanceState);
         recordViewModel = ViewModelProviders.of(this, viewModelFactory).get(RecordViewModel.class);
 
-        recordViewModel.fetchRecords();
+        fetchRecords();
         onRecords();
 
+    }
+
+    private void fetchRecords() {
+        rvRecords.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+        recordViewModel.fetchRecords();
     }
 
     private void onRecords() {
         recordViewModel.getRecordsLive().observe(this, new Observer<LiveHolder>() {
             @Override
             public void onChanged(LiveHolder recordsHolder) {
+                progressBar.setVisibility(View.GONE);
+                rvRecords.setVisibility(View.VISIBLE);
                 switch (recordsHolder.status) {
                     case SUCCESS:
                         recordAdapter.setRecords((List<Record>) recordsHolder.data);
