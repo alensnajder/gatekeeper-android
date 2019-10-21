@@ -30,6 +30,8 @@
         tools:layout="@layout/fragment_sign_up_success" >
         <action
             android:id="@+id/action_signUpSuccessFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            app:destination="@id/loginFragment"
+            app:popUpTo="@+id/nav_graph_auth"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

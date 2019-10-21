@@ -47,7 +47,7 @@ public class SignUpSuccessFragment extends DaggerFragment implements View.OnClic
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btToLogin:
-                Navigation.findNavController(getView()).navigate(R.id.loginFragment);
+                Navigation.findNavController(getView()).navigate(SignUpSuccessFragmentDirections.actionSignUpSuccessFragmentToLoginFragment());
                 break;
         }
     }
