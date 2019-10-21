@@ -40,7 +40,6 @@ public class GateAdapter extends RecyclerView.Adapter<GateAdapter.GateViewHolder
     public void onBindViewHolder(@NonNull GateViewHolder holder, int position) {
         Gate gate = gates.get(position);
         holder.tvGateName.setText(gate.getName());
-        holder.tvGateGpio.setText("GPIO: " + gate.getGpioPin());
     }
 
     @Override
@@ -51,12 +50,10 @@ public class GateAdapter extends RecyclerView.Adapter<GateAdapter.GateViewHolder
     public static class GateViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvGateName;
-        TextView tvGateGpio;
 
         public GateViewHolder(View itemView) {
             super(itemView);
             tvGateName = itemView.findViewById(R.id.tvGateName);
-            tvGateGpio = itemView.findViewById(R.id.tvGateGpio);
         }
     }
 }
