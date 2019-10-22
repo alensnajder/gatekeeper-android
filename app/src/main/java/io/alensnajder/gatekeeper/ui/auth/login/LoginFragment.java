@@ -57,6 +57,7 @@ public class LoginFragment extends DaggerFragment implements View.OnClickListene
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_login, container, false);
         setHasOptionsMenu(true);
+        getActivity().setTitle("Login");
         etEmail = rootView.findViewById(R.id.etEmail);
         etPassword = rootView.findViewById(R.id.etPassword);
         Button btLogin = rootView.findViewById(R.id.btLogin);
