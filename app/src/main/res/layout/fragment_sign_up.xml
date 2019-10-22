@@ -112,7 +112,8 @@
         android:text="Sign Up"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tilConfirmPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/tilConfirmPassword"
+        style="@style/Widget.AppCompat.Button.Colored" />
 
     <ImageView
         android:id="@+id/imageView"
