@@ -25,7 +25,6 @@ import io.alensnajder.gatekeeper.network.HostInterceptor;
 import io.alensnajder.gatekeeper.network.TokenAuthenticator;
 import io.alensnajder.gatekeeper.network.TokenInterceptor;
 import io.alensnajder.gatekeeper.utils.AccountUtils;
-import io.alensnajder.gatekeeper.utils.BooleanTypeAdapter;
 import io.alensnajder.gatekeeper.utils.HostUtils;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -63,22 +62,22 @@ class AppModule {
 
     @Provides @Named("Retrofit")
     @Singleton
-    Retrofit provideRetrofit(@Named("HttpClient") OkHttpClient okHttpClient, Gson gson) {
+    Retrofit provideRetrofit(@Named("HttpClient") OkHttpClient okHttpClient) {
         return new Retrofit.Builder()
                 .baseUrl("http://192.168.1.1")
                 .client(okHttpClient)
-                .addConverterFactory(GsonConverterFactory.create(gson))
+                .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
     }
 
     @Provides @Named("AuthRetrofit")
     @Singleton
-    Retrofit provideAuthRetrofit(@Named("HttpAuthClient") OkHttpClient httpClient, Gson gson) {
+    Retrofit provideAuthRetrofit(@Named("HttpAuthClient") OkHttpClient httpClient) {
         return new Retrofit.Builder()
                 .baseUrl("http://192.168.1.1")
                 .client(httpClient)
-                .addConverterFactory(GsonConverterFactory.create(gson))
+                .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
     }
@@ -171,19 +170,5 @@ class AppModule {
     @Singleton
     TokenAuthenticator provideTokenAuthenticator(AuthService authService, AppPreferences appPreferences, TokenInterceptor tokenInterceptor) {
         return new TokenAuthenticator(authService, appPreferences, tokenInterceptor);
-    }
-
-    @Provides
-    @Singleton
-    Gson provideGson(BooleanTypeAdapter booleanTypeAdapter) {
-        return new GsonBuilder()
-                .registerTypeAdapter(boolean.class, booleanTypeAdapter)
-                .create();
-    }
-
-    @Provides
-    @Singleton
-    BooleanTypeAdapter provideBooleanTypeAdapter() {
-        return new BooleanTypeAdapter();
     }
 }
