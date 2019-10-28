@@ -8,6 +8,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,16 +53,19 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
         TextView tvUserName;
         TextView tvEmail;
+        TextView tvStatus;
 
         public ViewHolder(View itemView) {
             super(itemView);
             tvUserName = itemView.findViewById(R.id.tvUserName);
             tvEmail = itemView.findViewById(R.id.tvEmail);
+            tvStatus = itemView.findViewById(R.id.tvStatus);
         }
 
         public void bind(final User user, final OnItemClickListener listener) {
             tvUserName.setText(user.getFullName());
             tvEmail.setText(user.getEmail());
+            tvStatus.setText((user.isActive()) ? "Active" : "Inactive");
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
