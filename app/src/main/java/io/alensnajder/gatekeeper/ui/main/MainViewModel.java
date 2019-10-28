@@ -37,7 +37,7 @@ public class MainViewModel extends ViewModel {
     }
 
     public boolean isReadyToRun() {
-        if (accountUtils.isLoggedIn() && hostUtils.isHostSet()) {
+        if (accountUtils.isLoggedIn() && accountUtils.isActive() && hostUtils.isHostSet()) {
             hostUtils.setHost();
             return true;
         }

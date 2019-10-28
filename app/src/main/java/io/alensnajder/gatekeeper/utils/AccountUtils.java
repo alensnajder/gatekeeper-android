@@ -46,11 +46,22 @@ public class AccountUtils {
 
         if (accessToken != null) {
             JWT jwt = new JWT(accessToken);
-            int id = jwt.getClaim("id").asInt();
 
-            return id;
+            return jwt.getClaim("id").asInt();
         }
 
         return 0;
+    }
+
+    public boolean isActive() {
+        String accessToken = appPreferences.getAccessToken();
+
+        if (accessToken != null) {
+            JWT jwt = new JWT(accessToken);
+
+            return jwt.getClaim("is_active").asBoolean();
+        }
+
+        return false;
     }
 }
