@@ -6,9 +6,9 @@ import javax.inject.Singleton;
 
 import io.alensnajder.gatekeeper.data.model.User;
 import io.alensnajder.gatekeeper.data.model.request.CreateUserRequest;
+import io.alensnajder.gatekeeper.data.model.request.UpdateUserStatusRequest;
 import io.alensnajder.gatekeeper.data.service.UserService;
 import io.reactivex.Single;
-import retrofit2.Response;
 
 @Singleton
 public class UserRepository {
@@ -33,7 +33,9 @@ public class UserRepository {
         return userService.createUser(request);
     }
 
-    public Single<Response<Void>> removeUser(int id) {
-        return userService.removeUser(id);
+    public Single<User> updateStatus(int id, boolean isActive) {
+        UpdateUserStatusRequest request = new UpdateUserStatusRequest(isActive);
+
+        return userService.updateStatus(id, request);
     }
 }

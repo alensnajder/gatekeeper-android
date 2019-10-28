@@ -12,7 +12,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.Response;
 
 public class UserDetailViewModel extends ViewModel {
 
@@ -20,7 +19,7 @@ public class UserDetailViewModel extends ViewModel {
 
     private CompositeDisposable disposable;
     private final MutableLiveData<LiveHolder> userLive = new MutableLiveData<>();
-    private final MutableLiveData<LiveHolder> userRemoveLive = new MutableLiveData<>();
+    private final MutableLiveData<LiveHolder> userStatusLive = new MutableLiveData<>();
 
     @Inject
     public UserDetailViewModel(UserRepository userRepository) {
@@ -32,8 +31,8 @@ public class UserDetailViewModel extends ViewModel {
         return userLive;
     }
 
-    public MutableLiveData<LiveHolder> getUserRemoveLive() {
-        return userRemoveLive;
+    public MutableLiveData<LiveHolder> getUserStatusLive() {
+        return userStatusLive;
     }
 
     public void fetchUser(int id) {
@@ -53,19 +52,19 @@ public class UserDetailViewModel extends ViewModel {
                 }));
     }
 
-    public void removeUser(int id) {
-        disposable.add(userRepository.removeUser(id)
+    public void updateUserStatus(int id, boolean isActive) {
+        disposable.add(userRepository.updateStatus(id, isActive)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSingleObserver<Response<Void>>() {
+                .subscribeWith(new DisposableSingleObserver<User>() {
                     @Override
-                    public void onSuccess(Response<Void> voidResponse) {
-                        userRemoveLive.setValue(LiveHolder.success(null));
+                    public void onSuccess(User user) {
+                        userStatusLive.setValue(LiveHolder.success(user));
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        userRemoveLive.setValue(LiveHolder.error(e.getMessage()));
+                        userStatusLive.setValue(LiveHolder.error(e.getMessage()));
                     }
                 }));
     }

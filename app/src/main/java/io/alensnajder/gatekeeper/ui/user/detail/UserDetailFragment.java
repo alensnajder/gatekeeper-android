@@ -1,12 +1,7 @@
 package io.alensnajder.gatekeeper.ui.user.detail;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -19,7 +14,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.Navigation;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -74,7 +68,7 @@ public class UserDetailFragment extends DaggerFragment implements View.OnClickLi
 
         fetchUser();
         onUser();
-        onUserRemove();
+        onUserStatus();
     }
 
     private void fetchUser() {
@@ -107,13 +101,15 @@ public class UserDetailFragment extends DaggerFragment implements View.OnClickLi
         });
     }
 
-    private void onUserRemove() {
-        userDetailViewModel.getUserRemoveLive().observe(this, new Observer<LiveHolder>() {
+    private void onUserStatus() {
+        userDetailViewModel.getUserStatusLive().observe(this, new Observer<LiveHolder>() {
             @Override
             public void onChanged(LiveHolder liveHolder) {
                 switch (liveHolder.status) {
                     case SUCCESS:
-                        Navigation.findNavController(getView()).popBackStack();
+                        user = (User) liveHolder.data;
+                        tvStatus.setText((user.isActive()) ? "Active" : "Inactive");
+                        btStatusToggle.setText((user.isActive()) ? "Deactivate" : "Activate");
                         break;
                     case ERROR:
                         Snackbar.make(getView(), liveHolder.errorMessage, Snackbar.LENGTH_LONG).show();
@@ -124,45 +120,10 @@ public class UserDetailFragment extends DaggerFragment implements View.OnClickLi
     }
 
     @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_user_details, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_remove:
-                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
-                dialogBuilder.setTitle("Remove");
-                dialogBuilder.setMessage("Are you sure you want to remove this item?");
-
-                dialogBuilder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        userDetailViewModel.removeUser(user.getId());
-                        dialog.cancel();
-                    }
-                });
-
-                dialogBuilder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-
-                dialogBuilder.show();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btStatusToggle:
+                userDetailViewModel.updateUserStatus(user.getId(), !user.isActive());
                 break;
         }
     }
