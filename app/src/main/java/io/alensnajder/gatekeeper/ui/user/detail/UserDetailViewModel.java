@@ -12,6 +12,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Response;
 
 public class UserDetailViewModel extends ViewModel {
 
@@ -19,6 +20,7 @@ public class UserDetailViewModel extends ViewModel {
 
     private CompositeDisposable disposable;
     private final MutableLiveData<LiveHolder> userLive = new MutableLiveData<>();
+    private final MutableLiveData<LiveHolder> userRemoveLive = new MutableLiveData<>();
 
     @Inject
     public UserDetailViewModel(UserRepository userRepository) {
@@ -28,6 +30,10 @@ public class UserDetailViewModel extends ViewModel {
 
     public MutableLiveData<LiveHolder> getUserLive() {
         return userLive;
+    }
+
+    public MutableLiveData<LiveHolder> getUserRemoveLive() {
+        return userRemoveLive;
     }
 
     public void fetchUser(int id) {
@@ -51,15 +57,15 @@ public class UserDetailViewModel extends ViewModel {
         disposable.add(userRepository.removeUser(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSingleObserver<Void>() {
+                .subscribeWith(new DisposableSingleObserver<Response<Void>>() {
                     @Override
-                    public void onSuccess(Void aVoid) {
-                        int i = 1 + 1;
+                    public void onSuccess(Response<Void> voidResponse) {
+                        userRemoveLive.setValue(LiveHolder.success(null));
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        int i = 1 + 1;
+                        userRemoveLive.setValue(LiveHolder.error(e.getMessage()));
                     }
                 }));
     }

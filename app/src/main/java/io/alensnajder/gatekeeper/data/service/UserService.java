@@ -5,6 +5,7 @@ import java.util.List;
 import io.alensnajder.gatekeeper.data.model.User;
 import io.alensnajder.gatekeeper.data.model.request.CreateUserRequest;
 import io.reactivex.Single;
+import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
@@ -22,5 +23,5 @@ public interface UserService {
     Single<User> createUser(@Body CreateUserRequest request);
 
     @DELETE("/v1/users/{id}")
-    Single<Void> removeUser(@Path("id") int id);
+    Single<Response<Void>> removeUser(@Path("id") int id);
 }

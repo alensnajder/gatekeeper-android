@@ -8,6 +8,7 @@ import io.alensnajder.gatekeeper.data.model.User;
 import io.alensnajder.gatekeeper.data.model.request.CreateUserRequest;
 import io.alensnajder.gatekeeper.data.service.UserService;
 import io.reactivex.Single;
+import retrofit2.Response;
 
 @Singleton
 public class UserRepository {
@@ -32,7 +33,7 @@ public class UserRepository {
         return userService.createUser(request);
     }
 
-    public Single<Void> removeUser(int id) {
+    public Single<Response<Void>> removeUser(int id) {
         return userService.removeUser(id);
     }
 }

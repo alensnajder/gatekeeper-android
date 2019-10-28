@@ -19,6 +19,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -73,6 +74,7 @@ public class UserDetailFragment extends DaggerFragment implements View.OnClickLi
 
         fetchUser();
         onUser();
+        onUserRemove();
     }
 
     private void fetchUser() {
@@ -99,6 +101,22 @@ public class UserDetailFragment extends DaggerFragment implements View.OnClickLi
                         break;
                     case ERROR:
                         Snackbar.make(getView(), userHolder.errorMessage, Snackbar.LENGTH_LONG).show();
+                        break;
+                }
+            }
+        });
+    }
+
+    private void onUserRemove() {
+        userDetailViewModel.getUserRemoveLive().observe(this, new Observer<LiveHolder>() {
+            @Override
+            public void onChanged(LiveHolder liveHolder) {
+                switch (liveHolder.status) {
+                    case SUCCESS:
+                        Navigation.findNavController(getView()).popBackStack();
+                        break;
+                    case ERROR:
+                        Snackbar.make(getView(), liveHolder.errorMessage, Snackbar.LENGTH_LONG).show();
                         break;
                 }
             }
