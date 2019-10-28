@@ -41,6 +41,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordView
         Record record = records.get(position);
         holder.tvGateName.setText(record.getGate().getName());
         holder.tvUserName.setText(record.getUser().getFullName());
+        holder.tvDate.setText(record.getCreatedAtString());
     }
 
     @Override
