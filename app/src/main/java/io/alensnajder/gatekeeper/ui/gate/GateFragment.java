@@ -62,6 +62,7 @@ public class GateFragment extends DaggerFragment implements GateAdapter.OnLongIt
 
         fetchGates();
         onGates();
+        onCreateRecord();
     }
 
     private void fetchGates() {
@@ -88,8 +89,24 @@ public class GateFragment extends DaggerFragment implements GateAdapter.OnLongIt
         });
     }
 
+    private void onCreateRecord() {
+        gateViewModel.getCreateRecordLive().observe(this, new Observer<LiveHolder>() {
+            @Override
+            public void onChanged(LiveHolder createRecordHolder) {
+                switch (createRecordHolder.status) {
+                    case SUCCESS:
+                        Snackbar.make(getView(), "Success", Snackbar.LENGTH_LONG).show();
+                        break;
+                    case ERROR:
+                        Snackbar.make(getView(), createRecordHolder.errorMessage, Snackbar.LENGTH_LONG).show();
+                        break;
+                }
+            }
+        });
+    }
+
     @Override
     public void onLongItemClick(Gate gate) {
-
+        gateViewModel.createRecord(gate.getId());
     }
 }

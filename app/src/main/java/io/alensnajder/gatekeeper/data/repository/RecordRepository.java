@@ -6,6 +6,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.alensnajder.gatekeeper.data.model.Record;
+import io.alensnajder.gatekeeper.data.model.request.CreateRecordRequest;
 import io.alensnajder.gatekeeper.data.service.RecordService;
 import io.reactivex.Single;
 
@@ -21,5 +22,11 @@ public class RecordRepository {
 
     public Single<List<Record>> getRecords() {
         return recordService.getRecords();
+    }
+
+    public Single<Record> createRecord(int gateId) {
+        CreateRecordRequest request = new CreateRecordRequest(gateId);
+
+        return recordService.createRecord(request);
     }
 }
