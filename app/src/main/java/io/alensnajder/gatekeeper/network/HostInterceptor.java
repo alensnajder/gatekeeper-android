@@ -29,6 +29,7 @@ public class HostInterceptor implements Interceptor {
         if (host != null) {
             HttpUrl url = HttpUrl.parse(host);
             HttpUrl newUrl = request.url().newBuilder()
+                    .scheme(url.scheme())
                     .host(url.host())
                     .port(url.port())
                     .build();

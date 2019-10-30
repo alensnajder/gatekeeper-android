@@ -3,9 +3,6 @@ package io.alensnajder.gatekeeper.di;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import javax.inject.Named;
 import javax.inject.Singleton;
 
