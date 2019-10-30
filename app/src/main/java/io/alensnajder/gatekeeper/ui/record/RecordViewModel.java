@@ -3,6 +3,8 @@ package io.alensnajder.gatekeeper.ui.record;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -37,6 +39,11 @@ public class RecordViewModel extends ViewModel {
         disposable.add(recordRepository.getRecords()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .map(unsortedRecords -> {
+                    List<Record> sortedRecords = new ArrayList<>(unsortedRecords);
+                    Collections.reverse(sortedRecords);
+                    return sortedRecords;
+                })
                 .subscribeWith(new DisposableSingleObserver<List<Record>>() {
                     @Override
                     public void onSuccess(List<Record> records) {
