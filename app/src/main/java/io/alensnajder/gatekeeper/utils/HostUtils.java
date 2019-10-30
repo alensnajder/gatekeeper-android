@@ -34,10 +34,14 @@ public class HostUtils {
     public boolean isHostSet() {
         String host = appPreferences.getHost();
 
-        if (host != null) {
+        if (host != null && !host.isEmpty()) {
             return true;
         }
 
         return false;
+    }
+
+    public String getHost() {
+        return appPreferences.getHost();
     }
 }

@@ -5,10 +5,8 @@ import androidx.lifecycle.ViewModel;
 
 import javax.inject.Inject;
 
-import io.alensnajder.gatekeeper.data.AppPreferences;
 import io.alensnajder.gatekeeper.data.model.Auth;
 import io.alensnajder.gatekeeper.data.repository.AuthRepository;
-import io.alensnajder.gatekeeper.network.HostInterceptor;
 import io.alensnajder.gatekeeper.utils.AccountUtils;
 import io.alensnajder.gatekeeper.utils.HostUtils;
 import io.alensnajder.gatekeeper.vo.LiveHolder;
@@ -38,6 +36,22 @@ public class LoginViewModel extends ViewModel {
         return authentication;
     }
 
+    public void setHost(String host) {
+        hostUtils.setHost(host);
+    }
+
+    public String getHost() {
+        return hostUtils.getHost();
+    }
+
+    public boolean isReadyToRun() {
+        if (hostUtils.isHostSet()) {
+            return true;
+        }
+
+        return false;
+    }
+
     public void login(String email, String password) {
         disposable.add(authRepository.getAccessTokenByPassword(email, password)
                 .subscribeOn(Schedulers.io())
@@ -56,9 +70,4 @@ public class LoginViewModel extends ViewModel {
                 }));
 
     }
-
-    public void setHost(String host) {
-        hostUtils.setHost(host);
-    }
-
 }

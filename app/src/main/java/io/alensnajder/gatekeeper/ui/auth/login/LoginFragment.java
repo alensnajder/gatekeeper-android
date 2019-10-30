@@ -1,7 +1,6 @@
 package io.alensnajder.gatekeeper.ui.auth.login;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +10,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -29,9 +27,6 @@ import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
 import io.alensnajder.gatekeeper.R;
-import io.alensnajder.gatekeeper.data.AppPreferences;
-import io.alensnajder.gatekeeper.network.HostInterceptor;
-import io.alensnajder.gatekeeper.ui.auth.AuthActivity;
 import io.alensnajder.gatekeeper.ui.main.MainActivity;
 import io.alensnajder.gatekeeper.vo.LiveHolder;
 
@@ -42,10 +37,6 @@ public class LoginFragment extends DaggerFragment implements View.OnClickListene
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
-    @Inject
-    AppPreferences appPreferences;
-    @Inject
-    HostInterceptor hostInterceptor;
     private LoginViewModel loginViewModel;
 
     public static LoginFragment newInstance() {
@@ -101,7 +92,11 @@ public class LoginFragment extends DaggerFragment implements View.OnClickListene
                 loginViewModel.login(etEmail.getText().toString(), etPassword.getText().toString());
                 break;
             case R.id.tvSignUp:
-                Navigation.findNavController(getView()).navigate(R.id.signUpFragment);
+                if (loginViewModel.isReadyToRun()) {
+                    Navigation.findNavController(getView()).navigate(R.id.signUpFragment);
+                } else {
+                    Snackbar.make(getView(), "Set host before sign up", Snackbar.LENGTH_LONG).show();
+                }
                 break;
         }
     }
@@ -129,7 +124,7 @@ public class LoginFragment extends DaggerFragment implements View.OnClickListene
         View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_host, (ViewGroup) getView(), false);
         final EditText etHost = view.findViewById(R.id.etHost);
 
-        String host = appPreferences.getHost();
+        String host = loginViewModel.getHost();
 
         if (host != null) {
             etHost.setText(host);
