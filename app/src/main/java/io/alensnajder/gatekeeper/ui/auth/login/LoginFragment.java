@@ -89,7 +89,11 @@ public class LoginFragment extends DaggerFragment implements View.OnClickListene
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btLogin:
-                loginViewModel.login(etEmail.getText().toString(), etPassword.getText().toString());
+                if (loginViewModel.isReadyToRun()) {
+                    loginViewModel.login(etEmail.getText().toString(), etPassword.getText().toString());
+                } else {
+                    Snackbar.make(getView(), "Set host before sign up", Snackbar.LENGTH_LONG).show();
+                }
                 break;
             case R.id.tvSignUp:
                 if (loginViewModel.isReadyToRun()) {

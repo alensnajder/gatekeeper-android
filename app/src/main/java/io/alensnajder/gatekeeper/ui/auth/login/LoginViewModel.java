@@ -46,6 +46,7 @@ public class LoginViewModel extends ViewModel {
 
     public boolean isReadyToRun() {
         if (hostUtils.isHostSet()) {
+            hostUtils.setHost();
             return true;
         }
 
