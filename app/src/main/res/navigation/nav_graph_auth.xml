@@ -21,7 +21,9 @@
         tools:layout="@layout/fragment_sign_up" >
         <action
             android:id="@+id/action_signUpFragment_to_signUpSuccessFragment"
-            app:destination="@id/signUpSuccessFragment" />
+            app:destination="@id/signUpSuccessFragment"
+            app:popUpTo="@+id/nav_graph_auth"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/signUpSuccessFragment"

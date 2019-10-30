@@ -68,7 +68,7 @@ public class SignUpFragment extends DaggerFragment implements View.OnClickListen
             public void onChanged(LiveHolder registrationHolder) {
                 switch (registrationHolder.status) {
                     case SUCCESS:
-                        Navigation.findNavController(getView()).navigate(R.id.signUpSuccessFragment);
+                        Navigation.findNavController(getView()).navigate(SignUpFragmentDirections.actionSignUpFragmentToSignUpSuccessFragment());
                         break;
                     case ERROR:
                         Snackbar.make(getView(), registrationHolder.errorMessage, Snackbar.LENGTH_LONG).show();
