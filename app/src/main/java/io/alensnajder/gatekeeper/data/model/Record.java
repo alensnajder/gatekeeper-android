@@ -39,6 +39,6 @@ public class Record {
     }
 
     public String getCreatedAtString() {
-        return new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss").format(createdAt);
+        return new SimpleDateFormat("d MMM yyyy HH:mm:ss").format(createdAt);
     }
 }
