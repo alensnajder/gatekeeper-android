@@ -21,7 +21,7 @@
             android:id="@+id/etEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="E-mail" />
+            android:hint="@string/hint_email" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -39,7 +39,7 @@
             android:id="@+id/etFirstName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="First name"
+            android:hint="@string/hint_first_name"
             android:inputType="textCapWords" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -58,7 +58,7 @@
             android:id="@+id/etLastName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Last name"
+            android:hint="@string/hint_last_name"
             android:inputType="textCapWords" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -78,7 +78,7 @@
             android:id="@+id/etPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Password"
+            android:hint="@string/hint_password"
             android:inputType="textPassword" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -98,7 +98,7 @@
             android:id="@+id/etConfirmPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Confirm password"
+            android:hint="@string/hint_confirm_password"
             android:inputType="textPassword" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -109,7 +109,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:text="Sign Up"
+        android:text="@string/button_sign_up"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tilConfirmPassword"

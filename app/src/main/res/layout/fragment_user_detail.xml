@@ -75,7 +75,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_weight="1"
-                    android:text="Status"
+                    android:text="@string/label_status"
                     android:textAlignment="center"
                     android:textColor="#000000" />
 
@@ -103,7 +103,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="Role"
+                    android:text="@string/label_role"
                     android:textAlignment="center"
                     android:textColor="#000000" />
 

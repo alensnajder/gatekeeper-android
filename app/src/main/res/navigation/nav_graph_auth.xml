@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="io.alensnajder.gatekeeper.ui.auth.login.LoginFragment"
-        android:label="Login"
+        android:label="@string/title_login"
         tools:layout="@layout/fragment_login" >
         <action
             android:id="@+id/action_loginFragment_to_signUpFragment"
@@ -17,7 +17,7 @@
     <fragment
         android:id="@+id/signUpFragment"
         android:name="io.alensnajder.gatekeeper.ui.auth.signup.SignUpFragment"
-        android:label="Sign Up"
+        android:label="@string/title_sign_up"
         tools:layout="@layout/fragment_sign_up" >
         <action
             android:id="@+id/action_signUpFragment_to_signUpSuccessFragment"
@@ -26,7 +26,7 @@
     <fragment
         android:id="@+id/signUpSuccessFragment"
         android:name="io.alensnajder.gatekeeper.ui.auth.success.SignUpSuccessFragment"
-        android:label="Success"
+        android:label="@string/title_success"
         tools:layout="@layout/fragment_sign_up_success" >
         <action
             android:id="@+id/action_signUpSuccessFragment_to_loginFragment"

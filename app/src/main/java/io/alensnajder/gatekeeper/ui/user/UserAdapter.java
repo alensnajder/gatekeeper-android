@@ -65,7 +65,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         public void bind(final User user, final OnItemClickListener listener) {
             tvUserName.setText(user.getFullName());
             tvEmail.setText(user.getEmail());
-            tvStatus.setText((user.isActive()) ? "Active" : "Inactive");
+            tvStatus.setText((user.isActive()) ? R.string.label_active : R.string.label_inactive);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

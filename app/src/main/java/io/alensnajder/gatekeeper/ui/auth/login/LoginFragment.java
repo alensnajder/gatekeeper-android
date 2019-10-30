@@ -124,7 +124,7 @@ public class LoginFragment extends DaggerFragment implements View.OnClickListene
 
     private void showHostDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Host");
+        builder.setTitle(R.string.title_login);
         View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_host, (ViewGroup) getView(), false);
         final EditText etHost = view.findViewById(R.id.etHost);
 

@@ -8,15 +8,15 @@
         <item
             android:id="@+id/nav_gate"
             android:icon="@drawable/ic_remote"
-            android:title="Gates" />
+            android:title="@string/title_gates" />
         <item
             android:id="@+id/nav_record"
             android:icon="@drawable/ic_history"
-            android:title="History" />
+            android:title="@string/title_history" />
         <item
             android:id="@id/nav_user"
-            android:icon="@drawable/ic_remote"
-            android:title="Users" />
+            android:icon="@drawable/ic_account"
+            android:title="@string/title_users" />
     </group>
 
     <group android:id="@+id/group_secondary"
@@ -24,7 +24,7 @@
         <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/ic_account"
-            android:title="Logout" />
+            android:title="@string/label_logout" />
     </group>
 
 </menu>

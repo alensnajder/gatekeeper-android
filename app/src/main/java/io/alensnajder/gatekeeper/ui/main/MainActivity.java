@@ -115,8 +115,8 @@ public class MainActivity extends DaggerAppCompatActivity
 
     private void showLogoutDialog() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-        dialogBuilder.setTitle("Logout");
-        dialogBuilder.setMessage("Are you sure you want to logout?");
+        dialogBuilder.setTitle(R.string.dialog_logout_title);
+        dialogBuilder.setMessage(R.string.dialog_logout_body);
 
         dialogBuilder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
