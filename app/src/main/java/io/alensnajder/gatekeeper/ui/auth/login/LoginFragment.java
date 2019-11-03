@@ -48,7 +48,7 @@ public class LoginFragment extends DaggerFragment implements View.OnClickListene
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_login, container, false);
         setHasOptionsMenu(true);
-        getActivity().setTitle("Login");
+        getActivity().setTitle(R.string.title_login);
         etEmail = rootView.findViewById(R.id.etEmail);
         etPassword = rootView.findViewById(R.id.etPassword);
         Button btLogin = rootView.findViewById(R.id.btLogin);
@@ -124,7 +124,7 @@ public class LoginFragment extends DaggerFragment implements View.OnClickListene
 
     private void showHostDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle(R.string.title_login);
+        builder.setTitle(R.string.dialog_host_title);
         View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_host, (ViewGroup) getView(), false);
         final EditText etHost = view.findViewById(R.id.etHost);
 

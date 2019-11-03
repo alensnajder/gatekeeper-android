@@ -35,11 +35,6 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(SignUpSuccessViewModel.class)
-    abstract ViewModel bindSignUpSuccessViewModel(SignUpSuccessViewModel signUpSuccessViewModel);
-
-    @Binds
-    @IntoMap
     @ViewModelKey(GateViewModel.class)
     abstract ViewModel bindGateViewModel(GateViewModel gateViewModel);
 

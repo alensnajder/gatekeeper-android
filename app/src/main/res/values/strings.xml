@@ -36,4 +36,5 @@
 
     <string name="dialog_logout_title">Logout</string>
     <string name="dialog_logout_body">Are you sure you want to logout?</string>
+    <string name="dialog_host_title">Host</string>
 </resources>
