@@ -30,6 +30,7 @@ public class SignUpFragment extends DaggerFragment implements View.OnClickListen
     private EditText etLastName;
     private EditText etPassword;
     private EditText etConfirmPassword;
+    private Button btSignUp;
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
@@ -48,7 +49,7 @@ public class SignUpFragment extends DaggerFragment implements View.OnClickListen
         etLastName = rootView.findViewById(R.id.etLastName);
         etPassword = rootView.findViewById(R.id.etPassword);
         etConfirmPassword = rootView.findViewById(R.id.etConfirmPassword);
-        Button btSignUp = rootView.findViewById(R.id.btSignUp);
+        btSignUp = rootView.findViewById(R.id.btSignUp);
         btSignUp.setOnClickListener(this);
 
         return rootView;
@@ -66,6 +67,7 @@ public class SignUpFragment extends DaggerFragment implements View.OnClickListen
         signUpViewModel.getRegistration().observe(this, new Observer<LiveHolder>() {
             @Override
             public void onChanged(LiveHolder registrationHolder) {
+                btSignUp.setEnabled(true);
                 switch (registrationHolder.status) {
                     case SUCCESS:
                         Navigation.findNavController(getView()).navigate(SignUpFragmentDirections.actionSignUpFragmentToSignUpSuccessFragment());
@@ -82,6 +84,7 @@ public class SignUpFragment extends DaggerFragment implements View.OnClickListen
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btSignUp:
+                btSignUp.setEnabled(false);
                 signUpViewModel.signUp(etEmail.getText().toString(), etFirstName.getText().toString(), etLastName.getText().toString(), etPassword.getText().toString(), etConfirmPassword.getText().toString());
                 break;
         }

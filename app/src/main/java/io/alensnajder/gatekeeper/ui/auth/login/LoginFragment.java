@@ -34,6 +34,7 @@ public class LoginFragment extends DaggerFragment implements View.OnClickListene
 
     private EditText etEmail;
     private EditText etPassword;
+    private Button btLogin;
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
@@ -51,7 +52,7 @@ public class LoginFragment extends DaggerFragment implements View.OnClickListene
         getActivity().setTitle(R.string.title_login);
         etEmail = rootView.findViewById(R.id.etEmail);
         etPassword = rootView.findViewById(R.id.etPassword);
-        Button btLogin = rootView.findViewById(R.id.btLogin);
+        btLogin = rootView.findViewById(R.id.btLogin);
         btLogin.setOnClickListener(this);
         TextView tvSignUp = rootView.findViewById(R.id.tvSignUp);
         tvSignUp.setOnClickListener(this);
@@ -71,6 +72,7 @@ public class LoginFragment extends DaggerFragment implements View.OnClickListene
         loginViewModel.getAuthentication().observe(this, new Observer<LiveHolder>() {
             @Override
             public void onChanged(LiveHolder authHolder) {
+                btLogin.setEnabled(true);
                 switch (authHolder.status) {
                     case SUCCESS:
                         Intent intent = new Intent(getActivity(), MainActivity.class);
@@ -90,6 +92,7 @@ public class LoginFragment extends DaggerFragment implements View.OnClickListene
         switch (view.getId()) {
             case R.id.btLogin:
                 if (loginViewModel.isReadyToRun()) {
+                    btLogin.setEnabled(false);
                     loginViewModel.login(etEmail.getText().toString(), etPassword.getText().toString());
                 } else {
                     Snackbar.make(getView(), "Set host before sign up", Snackbar.LENGTH_LONG).show();
