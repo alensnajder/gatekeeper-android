@@ -14,7 +14,7 @@ import java.util.List;
 import io.alensnajder.gatekeeper.R;
 import io.alensnajder.gatekeeper.data.model.Record;
 
-public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordViewHolder> {
+public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder> {
 
     private List<Record> records;
 
@@ -29,19 +29,16 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordView
 
     @NonNull
     @Override
-    public RecordViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_records, parent, false);
-        RecordViewHolder viewHolder = new RecordViewHolder(view);
+        ViewHolder viewHolder = new ViewHolder(view);
 
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecordViewHolder holder, int position) {
-        Record record = records.get(position);
-        holder.tvGateName.setText(record.getGate().getName());
-        holder.tvUserName.setText(record.getUser().getFullName());
-        holder.tvDate.setText(record.getCreatedAtString());
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        holder.bind(records.get(position));
     }
 
     @Override
@@ -49,17 +46,23 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordView
         return records.size();
     }
 
-    public static class RecordViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvGateName;
         TextView tvUserName;
         TextView tvDate;
 
-        public RecordViewHolder(View itemView) {
+        public ViewHolder(View itemView) {
             super(itemView);
             tvGateName = itemView.findViewById(R.id.tvGateName);
             tvUserName = itemView.findViewById(R.id.tvUserName);
             tvDate = itemView.findViewById(R.id.tvDate);
+        }
+
+        public void bind(final Record record) {
+            tvGateName.setText(record.getGate().getName());
+            tvUserName.setText(record.getUser().getFullName());
+            tvDate.setText(record.getCreatedAtString());
         }
     }
 }

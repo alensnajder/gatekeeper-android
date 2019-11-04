@@ -58,12 +58,9 @@ public class GateAdapter extends RecyclerView.Adapter<GateAdapter.ViewHolder> {
 
         public void bind(final Gate gate, final OnLongItemClickListener listener) {
             tvGateName.setText(gate.getName());
-            itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    listener.onLongItemClick(gate);
-                    return true;
-                }
+            itemView.setOnLongClickListener(v -> {
+                listener.onLongItemClick(gate);
+                return true;
             });
         }
     }

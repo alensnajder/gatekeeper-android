@@ -62,7 +62,6 @@ public class RecordFragment extends DaggerFragment {
 
         fetchRecords();
         onRecords();
-
     }
 
     private void fetchRecords() {
@@ -72,19 +71,16 @@ public class RecordFragment extends DaggerFragment {
     }
 
     private void onRecords() {
-        recordViewModel.getRecordsLive().observe(this, new Observer<LiveHolder>() {
-            @Override
-            public void onChanged(LiveHolder recordsHolder) {
-                progressBar.setVisibility(View.GONE);
-                rvRecords.setVisibility(View.VISIBLE);
-                switch (recordsHolder.status) {
-                    case SUCCESS:
-                        recordAdapter.setRecords((List<Record>) recordsHolder.data);
-                        break;
-                    case ERROR:
-                        Snackbar.make(getView(), recordsHolder.errorMessage, Snackbar.LENGTH_LONG).show();
-                        break;
-                }
+        recordViewModel.getRecordsLive().observe(this, recordsHolder -> {
+            progressBar.setVisibility(View.GONE);
+            rvRecords.setVisibility(View.VISIBLE);
+            switch (recordsHolder.status) {
+                case SUCCESS:
+                    recordAdapter.setRecords((List<Record>) recordsHolder.data);
+                    break;
+                case ERROR:
+                    Snackbar.make(getView(), recordsHolder.errorMessage, Snackbar.LENGTH_LONG).show();
+                    break;
             }
         });
     }

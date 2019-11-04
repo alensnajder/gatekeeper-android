@@ -79,42 +79,36 @@ public class UserDetailFragment extends DaggerFragment implements View.OnClickLi
     }
 
     private void onUser() {
-        userDetailViewModel.getUserLive().observe(this, new Observer<LiveHolder>() {
-            @Override
-            public void onChanged(LiveHolder userHolder) {
-                progressBar.setVisibility(View.GONE);
-                content.setVisibility(View.VISIBLE);
-                switch (userHolder.status) {
-                    case SUCCESS:
-                        user = (User) userHolder.data;
-                        tvFullName.setText(user.getFullName());
-                        tvEmail.setText(user.getEmail());
-                        tvStatus.setText((user.isActive()) ? R.string.label_active : R.string.label_inactive);
-                        tvRole.setText((user.isAdmin()) ? R.string.label_admin : R.string.label_user);
-                        btStatusToggle.setText((user.isActive()) ? R.string.button_deactivate : R.string.button_activate);
-                        break;
-                    case ERROR:
-                        Snackbar.make(getView(), userHolder.errorMessage, Snackbar.LENGTH_LONG).show();
-                        break;
-                }
+        userDetailViewModel.getUserLive().observe(this, userHolder -> {
+            progressBar.setVisibility(View.GONE);
+            content.setVisibility(View.VISIBLE);
+            switch (userHolder.status) {
+                case SUCCESS:
+                    user = (User) userHolder.data;
+                    tvFullName.setText(user.getFullName());
+                    tvEmail.setText(user.getEmail());
+                    tvStatus.setText((user.isActive()) ? R.string.label_active : R.string.label_inactive);
+                    tvRole.setText((user.isAdmin()) ? R.string.label_admin : R.string.label_user);
+                    btStatusToggle.setText((user.isActive()) ? R.string.button_deactivate : R.string.button_activate);
+                    break;
+                case ERROR:
+                    Snackbar.make(getView(), userHolder.errorMessage, Snackbar.LENGTH_LONG).show();
+                    break;
             }
         });
     }
 
     private void onUserStatus() {
-        userDetailViewModel.getUserStatusLive().observe(this, new Observer<LiveHolder>() {
-            @Override
-            public void onChanged(LiveHolder liveHolder) {
-                switch (liveHolder.status) {
-                    case SUCCESS:
-                        user = (User) liveHolder.data;
-                        tvStatus.setText((user.isActive()) ? R.string.label_active : R.string.label_inactive);
-                        btStatusToggle.setText((user.isActive()) ? R.string.button_deactivate : R.string.button_activate);
-                        break;
-                    case ERROR:
-                        Snackbar.make(getView(), liveHolder.errorMessage, Snackbar.LENGTH_LONG).show();
-                        break;
-                }
+        userDetailViewModel.getUserStatusLive().observe(this, liveHolder -> {
+            switch (liveHolder.status) {
+                case SUCCESS:
+                    user = (User) liveHolder.data;
+                    tvStatus.setText((user.isActive()) ? R.string.label_active : R.string.label_inactive);
+                    btStatusToggle.setText((user.isActive()) ? R.string.button_deactivate : R.string.button_activate);
+                    break;
+                case ERROR:
+                    Snackbar.make(getView(), liveHolder.errorMessage, Snackbar.LENGTH_LONG).show();
+                    break;
             }
         });
     }

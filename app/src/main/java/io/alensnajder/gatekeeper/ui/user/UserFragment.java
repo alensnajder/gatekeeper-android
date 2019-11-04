@@ -72,19 +72,16 @@ public class UserFragment extends DaggerFragment implements UserAdapter.OnItemCl
     }
 
     private void onUsers() {
-        userViewModel.getUsersLive().observe(this, new Observer<LiveHolder>() {
-            @Override
-            public void onChanged(LiveHolder usersHolder) {
-                progressBar.setVisibility(View.GONE);
-                rvUsers.setVisibility(View.VISIBLE);
-                switch (usersHolder.status) {
-                    case SUCCESS:
-                        userAdapter.setUsers((List<User>) usersHolder.data);
-                        break;
-                    case ERROR:
-                        Snackbar.make(getView(), usersHolder.errorMessage, Snackbar.LENGTH_LONG).show();
-                        break;
-                }
+        userViewModel.getUsersLive().observe(this, usersHolder -> {
+            progressBar.setVisibility(View.GONE);
+            rvUsers.setVisibility(View.VISIBLE);
+            switch (usersHolder.status) {
+                case SUCCESS:
+                    userAdapter.setUsers((List<User>) usersHolder.data);
+                    break;
+                case ERROR:
+                    Snackbar.make(getView(), usersHolder.errorMessage, Snackbar.LENGTH_LONG).show();
+                    break;
             }
         });
     }

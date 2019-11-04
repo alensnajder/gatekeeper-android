@@ -1,7 +1,6 @@
 package io.alensnajder.gatekeeper.ui.main;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -12,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
@@ -29,7 +27,6 @@ import dagger.android.support.DaggerAppCompatActivity;
 import io.alensnajder.gatekeeper.R;
 import io.alensnajder.gatekeeper.data.model.User;
 import io.alensnajder.gatekeeper.ui.auth.AuthActivity;
-import io.alensnajder.gatekeeper.vo.LiveHolder;
 
 public class MainActivity extends DaggerAppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -63,17 +60,14 @@ public class MainActivity extends DaggerAppCompatActivity
     }
 
     private void onUser() {
-        mainViewModel.getUserLive().observe(this, new Observer<LiveHolder>() {
-            @Override
-            public void onChanged(LiveHolder userHolder) {
-                switch (userHolder.status) {
-                    case SUCCESS:
-                        setupNavigationHeader((User) userHolder.data);
-                        break;
-                    case ERROR:
-                        Snackbar.make(findViewById(android.R.id.content), userHolder.errorMessage, Snackbar.LENGTH_LONG).show();
-                        break;
-                }
+        mainViewModel.getUserLive().observe(this, userHolder -> {
+            switch (userHolder.status) {
+                case SUCCESS:
+                    setupNavigationHeader((User) userHolder.data);
+                    break;
+                case ERROR:
+                    Snackbar.make(findViewById(android.R.id.content), userHolder.errorMessage, Snackbar.LENGTH_LONG).show();
+                    break;
             }
         });
     }
@@ -118,21 +112,13 @@ public class MainActivity extends DaggerAppCompatActivity
         dialogBuilder.setTitle(R.string.dialog_logout_title);
         dialogBuilder.setMessage(R.string.dialog_logout_body);
 
-        dialogBuilder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                mainViewModel.logout();
-                navigateToLogin();
-                dialog.cancel();
-            }
+        dialogBuilder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
+            mainViewModel.logout();
+            navigateToLogin();
+            dialog.cancel();
         });
 
-        dialogBuilder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
+        dialogBuilder.setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel());
 
         dialogBuilder.show();
     }

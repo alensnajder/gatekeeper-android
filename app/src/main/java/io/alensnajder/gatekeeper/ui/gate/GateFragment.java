@@ -8,7 +8,6 @@ import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -24,7 +23,6 @@ import javax.inject.Inject;
 import dagger.android.support.DaggerFragment;
 import io.alensnajder.gatekeeper.R;
 import io.alensnajder.gatekeeper.data.model.Gate;
-import io.alensnajder.gatekeeper.vo.LiveHolder;
 
 public class GateFragment extends DaggerFragment implements GateAdapter.OnLongItemClickListener {
 
@@ -72,35 +70,29 @@ public class GateFragment extends DaggerFragment implements GateAdapter.OnLongIt
     }
 
     private void onGates() {
-        gateViewModel.getGatesLive().observe(this, new Observer<LiveHolder>() {
-            @Override
-            public void onChanged(LiveHolder gatesHolder) {
-                progressBar.setVisibility(View.GONE);
-                rvGates.setVisibility(View.VISIBLE);
-                switch (gatesHolder.status) {
-                    case SUCCESS:
-                        gateAdapter.setGates((List<Gate>) gatesHolder.data);
-                        break;
-                    case ERROR:
-                        Snackbar.make(getView(), gatesHolder.errorMessage, Snackbar.LENGTH_LONG).show();
-                        break;
-                }
+        gateViewModel.getGatesLive().observe(this, gatesHolder -> {
+            progressBar.setVisibility(View.GONE);
+            rvGates.setVisibility(View.VISIBLE);
+            switch (gatesHolder.status) {
+                case SUCCESS:
+                    gateAdapter.setGates((List<Gate>) gatesHolder.data);
+                    break;
+                case ERROR:
+                    Snackbar.make(getView(), gatesHolder.errorMessage, Snackbar.LENGTH_LONG).show();
+                    break;
             }
         });
     }
 
     private void onCreateRecord() {
-        gateViewModel.getCreateRecordLive().observe(this, new Observer<LiveHolder>() {
-            @Override
-            public void onChanged(LiveHolder createRecordHolder) {
-                switch (createRecordHolder.status) {
-                    case SUCCESS:
-                        Snackbar.make(getView(), "Success", Snackbar.LENGTH_LONG).show();
-                        break;
-                    case ERROR:
-                        Snackbar.make(getView(), createRecordHolder.errorMessage, Snackbar.LENGTH_LONG).show();
-                        break;
-                }
+        gateViewModel.getCreateRecordLive().observe(this, createRecordHolder -> {
+            switch (createRecordHolder.status) {
+                case SUCCESS:
+                    Snackbar.make(getView(), "Success", Snackbar.LENGTH_LONG).show();
+                    break;
+                case ERROR:
+                    Snackbar.make(getView(), createRecordHolder.errorMessage, Snackbar.LENGTH_LONG).show();
+                    break;
             }
         });
     }
