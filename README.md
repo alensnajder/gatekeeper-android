@@ -14,7 +14,7 @@ Gatekeeper Android is a native Android application that let's you control gates 
 ![Login](.github/screenshot-login.png "Login with username and password")
 ![Sign up](.github/screenshot-signup.png "Create new account")
 ![Gates](.github/screenshot-gates.png "Browse gates")
-![History](.github/screenshot-history.png, "Browse history")
+![History](.github/screenshot-history.png "Browse history")
 ![Users](.github/screenshot-users.png "Browse users")
 ![User details](.github/screenshot-user-details.png "See user details")
 
