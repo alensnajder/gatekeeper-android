@@ -8,7 +8,6 @@ import dagger.Module;
 import dagger.multibindings.IntoMap;
 import io.alensnajder.gatekeeper.ui.auth.login.LoginViewModel;
 import io.alensnajder.gatekeeper.ui.auth.signup.SignUpViewModel;
-import io.alensnajder.gatekeeper.ui.auth.success.SignUpSuccessViewModel;
 import io.alensnajder.gatekeeper.ui.gate.GateViewModel;
 import io.alensnajder.gatekeeper.ui.main.MainViewModel;
 import io.alensnajder.gatekeeper.ui.record.RecordViewModel;

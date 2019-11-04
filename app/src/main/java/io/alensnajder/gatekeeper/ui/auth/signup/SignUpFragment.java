@@ -6,11 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
@@ -21,7 +19,6 @@ import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
 import io.alensnajder.gatekeeper.R;
-import io.alensnajder.gatekeeper.vo.LiveHolder;
 
 public class SignUpFragment extends DaggerFragment implements View.OnClickListener {
 
@@ -64,18 +61,15 @@ public class SignUpFragment extends DaggerFragment implements View.OnClickListen
     }
 
     private void onRegistration() {
-        signUpViewModel.getRegistration().observe(this, new Observer<LiveHolder>() {
-            @Override
-            public void onChanged(LiveHolder registrationHolder) {
-                btSignUp.setEnabled(true);
-                switch (registrationHolder.status) {
-                    case SUCCESS:
-                        Navigation.findNavController(getView()).navigate(SignUpFragmentDirections.actionSignUpFragmentToSignUpSuccessFragment());
-                        break;
-                    case ERROR:
-                        Snackbar.make(getView(), registrationHolder.errorMessage, Snackbar.LENGTH_LONG).show();
-                        break;
-                }
+        signUpViewModel.getRegistration().observe(this, registrationHolder -> {
+            btSignUp.setEnabled(true);
+            switch (registrationHolder.status) {
+                case SUCCESS:
+                    Navigation.findNavController(getView()).navigate(SignUpFragmentDirections.actionSignUpFragmentToSignUpSuccessFragment());
+                    break;
+                case ERROR:
+                    Snackbar.make(getView(), registrationHolder.errorMessage, Snackbar.LENGTH_LONG).show();
+                    break;
             }
         });
     }

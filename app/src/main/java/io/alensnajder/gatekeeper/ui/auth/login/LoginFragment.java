@@ -1,7 +1,6 @@
 package io.alensnajder.gatekeeper.ui.auth.login;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,7 +15,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
@@ -28,7 +26,6 @@ import javax.inject.Inject;
 import dagger.android.support.DaggerFragment;
 import io.alensnajder.gatekeeper.R;
 import io.alensnajder.gatekeeper.ui.main.MainActivity;
-import io.alensnajder.gatekeeper.vo.LiveHolder;
 
 public class LoginFragment extends DaggerFragment implements View.OnClickListener {
 
@@ -69,20 +66,17 @@ public class LoginFragment extends DaggerFragment implements View.OnClickListene
     }
 
     private void onAuthentication() {
-        loginViewModel.getAuthentication().observe(this, new Observer<LiveHolder>() {
-            @Override
-            public void onChanged(LiveHolder authHolder) {
-                btLogin.setEnabled(true);
-                switch (authHolder.status) {
-                    case SUCCESS:
-                        Intent intent = new Intent(getActivity(), MainActivity.class);
-                        startActivity(intent);
-                        getActivity().finish();
-                        break;
-                    case ERROR:
-                        Snackbar.make(getView(), authHolder.errorMessage, Snackbar.LENGTH_LONG).show();
-                        break;
-                }
+        loginViewModel.getAuthentication().observe(this, authHolder -> {
+            btLogin.setEnabled(true);
+            switch (authHolder.status) {
+                case SUCCESS:
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    startActivity(intent);
+                    getActivity().finish();
+                    break;
+                case ERROR:
+                    Snackbar.make(getView(), authHolder.errorMessage, Snackbar.LENGTH_LONG).show();
+                    break;
             }
         });
     }
@@ -95,14 +89,14 @@ public class LoginFragment extends DaggerFragment implements View.OnClickListene
                     btLogin.setEnabled(false);
                     loginViewModel.login(etEmail.getText().toString(), etPassword.getText().toString());
                 } else {
-                    Snackbar.make(getView(), "Set host before sign up", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(getView(), R.string.error_host_not_set_login, Snackbar.LENGTH_LONG).show();
                 }
                 break;
             case R.id.tvSignUp:
                 if (loginViewModel.isReadyToRun()) {
                     Navigation.findNavController(getView()).navigate(R.id.signUpFragment);
                 } else {
-                    Snackbar.make(getView(), "Set host before sign up", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(getView(), R.string.error_host_not_set_signup, Snackbar.LENGTH_LONG).show();
                 }
                 break;
         }
@@ -139,21 +133,13 @@ public class LoginFragment extends DaggerFragment implements View.OnClickListene
 
         builder.setView(view);
 
-        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String host = etHost.getText().toString();
-                loginViewModel.setHost(host);
-                dialog.cancel();
-            }
+        builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
+            String newHost = etHost.getText().toString();
+            loginViewModel.setHost(newHost);
+            dialog.cancel();
         });
 
-        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
+        builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel());
 
         builder.show();
     }

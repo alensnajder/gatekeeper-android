@@ -37,4 +37,7 @@
     <string name="dialog_logout_title">Logout</string>
     <string name="dialog_logout_body">Are you sure you want to logout?</string>
     <string name="dialog_host_title">Host</string>
+
+    <string name="error_host_not_set_login">Set host before login</string>
+    <string name="error_host_not_set_signup">Set host before sign up</string>
 </resources>

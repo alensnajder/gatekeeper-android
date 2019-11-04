@@ -33,4 +33,6 @@
     <string name="dialog_logout_title">Odjava</string>
     <string name="dialog_logout_body">Ste prepričani, da se želite odjaviti?</string>
     <string name="dialog_host_title">Host</string>
+    <string name="error_host_not_set_login">Nastavi host pred prijavo</string>
+    <string name="error_host_not_set_signup">Nastavi host pred registracijo</string>
 </resources>
