@@ -1,0 +1,25 @@
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="EditTextDark" parent="android:Widget.EditText">
+        <item name="android:textColor">@color/colorPerano</item>
+        <item name="android:textColorHint">@color/colorLynch</item>
+        <item name="android:background">@drawable/bg_edittext</item>
+    </style>
+
+    <style name="TextInputLayoutDark" parent="Widget.Design.TextInputLayout">
+        <item name="passwordToggleTint">@color/colorLynch</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+</resources>

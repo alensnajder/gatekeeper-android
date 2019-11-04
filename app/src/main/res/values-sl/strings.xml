@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Gatekeeper</string>
+    <string name="button_activate">Aktiviraj</string>
+    <string name="button_continue_to_login">Nadaljuj na prijavo</string>
+    <string name="button_deactivate">Deaktiviraj</string>
+    <string name="button_login">Prijava</string>
+    <string name="button_sign_up">Registracija</string>
+    <string name="hint_email">E-naslov</string>
+    <string name="hint_first_name">Ime</string>
+    <string name="hint_last_name">Priimek</string>
+    <string name="hint_password">Geslo</string>
+    <string name="label_active">Aktiven</string>
+    <string name="label_admin">Admin</string>
+    <string name="label_inactive">Neaktiven</string>
+    <string name="label_logout">Odjava</string>
+    <string name="label_no_account">Še nimaš računa?</string>
+    <string name="label_press_and_hold">Pritisni in drži</string>
+    <string name="label_role">Vloga</string>
+    <string name="label_sign_up">Registracija</string>
+    <string name="label_status">Status</string>
+    <string name="label_success_text">Račun je bil uspešno ustvarjen</string>
+    <string name="label_user">Uporabnik</string>
+    <string name="title_details">Podrobnosti</string>
+    <string name="title_gates">Vrata</string>
+    <string name="title_history">Zgodovina</string>
+    <string name="title_login">Prijava</string>
+    <string name="title_sign_up">Registracija</string>
+    <string name="title_users">Uporabniki</string>
+    <string name="label_success_title">Uspešno</string>
+    <string name="hint_confirm_password">Potrditev gesla</string>
+    <string name="title_success">Uspešna registracija</string>
+    <string name="dialog_logout_title">Odjava</string>
+    <string name="dialog_logout_body">Ste prepričani, da se želite odjaviti?</string>
+    <string name="dialog_host_title">Host</string>
+    <string name="error_host_not_set_login">Nastavi host pred prijavo</string>
+    <string name="error_host_not_set_signup">Nastavi host pred registracijo</string>
+</resources>

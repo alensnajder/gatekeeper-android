@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">Gatekeeper</string>
+
+    <string name="title_login">Login</string>
+    <string name="title_sign_up">Sign up</string>
+    <string name="title_gates">Gates</string>
+    <string name="title_history">History</string>
+    <string name="title_users">Users</string>
+    <string name="title_details">Details</string>
+    <string name="title_success">Success</string>
+
+    <string name="hint_email">E-mail</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_confirm_password">Confirm password</string>
+    <string name="hint_first_name">First name</string>
+    <string name="hint_last_name">Last name</string>
+
+    <string name="button_login">Login</string>
+    <string name="button_sign_up">Sign up</string>
+    <string name="button_continue_to_login">Continue to login</string>
+    <string name="button_activate">Activate</string>
+    <string name="button_deactivate">Deactivate</string>
+
+    <string name="label_no_account">Don\'t have an account yet?</string>
+    <string name="label_sign_up">Sign up</string>
+    <string name="label_success_title">Success</string>
+    <string name="label_success_text">Your account has been successfully created.</string>
+    <string name="label_press_and_hold">Press and hold</string>
+    <string name="label_active">Active</string>
+    <string name="label_inactive">Inactive</string>
+    <string name="label_status">Status</string>
+    <string name="label_role">Role</string>
+    <string name="label_admin">Admin</string>
+    <string name="label_user">User</string>
+    <string name="label_logout">Logout</string>
+
+    <string name="dialog_logout_title">Logout</string>
+    <string name="dialog_logout_body">Are you sure you want to logout?</string>
+    <string name="dialog_host_title">Host</string>
+
+    <string name="error_host_not_set_login">Set host before login</string>
+    <string name="error_host_not_set_signup">Set host before sign up</string>
+</resources>
