@@ -23,7 +23,7 @@ Gatekeeper Android is a native Android application that let's you control gates 
 + **[Dagger 2](https://github.com/google/dagger)** for dependency injection
 + **[RxJava2](https://github.com/ReactiveX/RxJava)** & **[RxAndroid](https://github.com/ReactiveX/RxAndroid)** for Retrofit
 + **[OkHttp](https://square.github.io/okhttp/)** for Retrofit, authentication and intercepting
-+ **[Retrofit](https://github.com/square/retrofit)** for consuming and API
++ **[Retrofit](https://github.com/square/retrofit)** for consuming Gatekeeper API
 # License
 ```
 Copyright (C) 2019 Alen Snajder  
