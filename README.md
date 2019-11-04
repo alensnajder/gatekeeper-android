@@ -11,12 +11,12 @@ Gatekeeper Android is a native Android application that let's you control gates 
 + User details
 + Activate/deactivate users
 # Screenshots
-![Alt text](.github/screenshot-login.png "Gatekeeper logo")
-![Alt text](.github/screenshot-signup.png "Gatekeeper logo")
-![Alt text](.github/screenshot-gates.png "Gatekeeper logo")
-![Alt text](.github/screenshot-history.png "Gatekeeper logo")
-![Alt text](.github/screenshot-users.png "Gatekeeper logo")
-![Alt text](.github/screenshot-user-details.png "Gatekeeper logo")
+![Login](.github/screenshot-login.png "Login with username and password")
+![Sign up](.github/screenshot-signup.png "Create new account")
+![Gates](.github/screenshot-gates.png "Browse gates")
+![History](.github/screenshot-history.png, "Browse history")
+![Users](.github/screenshot-users.png "Browse users")
+![User details](.github/screenshot-user-details.png "See user details")
 
 # Specs & Libraries used
 + **MVVM** Architecture
