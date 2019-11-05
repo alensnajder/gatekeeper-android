@@ -1,5 +1,5 @@
 ![Alt text](.github/logo.svg?sanitize=true "Gatekeeper logo")
-# Gatekeeper Android
+# Gatekeeper Android [![Build Status](https://travis-ci.com/alensnajder/gatekeeper-android.svg?branch=master)](https://travis-ci.com/alensnajder/gatekeeper-android)
 Gatekeeper Android is a native Android application that let's you control gates exposed by [Gatekeeper API](https://github.com/alensnajder/gatekeeper-api). 
 # Features
 + Authentication
